@@ -3,7 +3,8 @@ const Runner = require('jscodeshift/src/Runner');
 const path = require('path');
 const glob = require('glob')
 
-const command: Command = {
+const command: Command & { __runner: any } = {
+	__runner: Runner,
 	group: 'upgrade',
 	name: 'app',
 	description: 'upgrade your application to later dojo versions',
@@ -34,7 +35,7 @@ const command: Command = {
 			runInBand: false,
 			silent: false
 		}
-		return Runner.run(opts.transform, opts.path, opts);
+		return command.__runner.run(opts.transform, opts.path, opts);
 	}
 };
 
