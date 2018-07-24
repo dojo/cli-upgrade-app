@@ -1,7 +1,7 @@
 {
   "name": "@dojo/cli-upgrade-app",
   "version": "3.0.0-pre",
-  "description": "updgrade dojo versions",
+  "description": "upgrade dojo versions",
   "main": "main",
   "scripts": {
     "build:cjs": "tsc",
