@@ -31,9 +31,7 @@
   },
   "homepage": "https://github.com/dojo/cli-upgrade-app#readme",
   "dependencies": {
-    "babylon": "7.0.0-beta.47",
-    "jscodeshift": "0.5.1",
-    "recast": "0.15.2"
+    "jscodeshift": "matt-gadd/jscodeshift#6ccc9fd0b9b7747f392afe6bc46cd1c77eff7731"
   },
   "devDependencies": {
     "@dojo/cli": "^2.0.0",

@@ -1,35 +1,39 @@
 import { Command, Helper, OptionsHelper } from '@dojo/cli/interfaces';
 const Runner = require('jscodeshift/src/Runner');
 const path = require('path');
-const babylon = require('babylon');
 const glob = require('glob')
 
 const command: Command = {
 	group: 'upgrade',
 	name: 'app',
 	description: 'upgrade your application to later dojo versions',
-	register(options: OptionsHelper) {},
-	run(helper: Helper) {
-		const options = {
-			sourceType: 'module',
-			allowImportExportEverywhere: true,
-			allowReturnOutsideFunction: true,
-			plugins: [ 'typescript', 'jsx' ]
-		};
-
-		const parser = (code: string)  => babylon.parse(code, options);
-
+	register(options: OptionsHelper) {
+		options('pattern', {
+			describe: 'glob pattern of source files to transform',
+			alias: 'p',
+			type: 'string',
+			default: '{src,tests}/**/*.{ts,tsx}'
+		});
+		options('dry', {
+			describe: 'perform a dry run, no changes are made to files',
+			alias: 'd',
+			type: 'boolean',
+			default: false
+		});
+	},
+	run(helper: Helper, args: { pattern: string, dry: boolean }) {
+		const { pattern, dry } = args;
 		const opts = {
-			parser,
+			parser: 'typescript',
 			transform: path.resolve(__dirname, 'transforms', 'module-transform-to-framework.js'),
-			path: glob.sync('{src,tests}/**/*.{ts,tsx}'),
+			path: glob.sync(pattern),
 			verbose: 0,
 			babel: false,
+			dry,
 			extensions: 'js',
 			runInBand: false,
 			silent: false
 		}
-
 		return Runner.run(opts.transform, opts.path, opts);
 	}
 };
