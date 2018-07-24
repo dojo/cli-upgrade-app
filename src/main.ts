@@ -52,10 +52,12 @@ const command: Command & { __runner: any } = {
 	},
 	run: async (helper: Helper, args: { pattern: string, dry: boolean }) => {
 		const { pattern, dry } = args;
+		const paths = glob.sync(pattern);
+		const hasJSX = paths.some((p: string) => p.match(/\.tsx$/g));
 		const opts = {
-			parser: 'typescript',
+			parser: hasJSX ? 'typescript-jsx' : 'typescript',
 			transform: path.resolve(__dirname, 'transforms', 'module-transform-to-framework.js'),
-			path: glob.sync(pattern),
+			path: paths,
 			verbose: 0,
 			babel: false,
 			dry,
