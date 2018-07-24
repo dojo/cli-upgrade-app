@@ -1,0 +1,6 @@
+{
+	"extends": "./node_modules/@dojo/scripts/intern/base.json",
+	"capabilities+": {
+		"name": "@dojo/cli-upgrade-app"
+	}
+}
