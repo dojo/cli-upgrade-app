@@ -1,0 +1,46 @@
+{
+  "name": "@dojo/cli-upgrade-app",
+  "version": "3.0.0-pre",
+  "description": "upgrade dojo versions",
+  "main": "main",
+  "scripts": {
+    "build:cjs": "tsc",
+    "build": "npm-run-all -p build:** -s package",
+    "clean": "rimraf dist coverage output test-app/output test-app/node_modules",
+    "intern": "intern",
+    "lint:tslint": "tslint -p .",
+    "lint:prettier": "prettier -l \"{src,tests}/**/*.{ts,tsx}\"",
+    "lint": "run-p lint:*",
+    "pack": "cd dist && npm pack -q ./release",
+    "package": "dojo-package",
+    "precommit": "lint-staged",
+    "prettier": "prettier --write \"{src,tests}/**/*.{ts,tsx}\"",
+    "test": "npm run build && intern",
+    "uploadCoverage": "codecov --file=coverage/coverage.json",
+    "watch:ts": "dojo-tsc-watcher -p tsconfig.json -- dojo-package",
+    "watch": "run-p watch:ts \"build:static:** -- --watch\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dojo/cli-upgrade-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dojo/cli-upgrade-app/issues"
+  },
+  "homepage": "https://github.com/dojo/cli-upgrade-app#readme",
+  "dependencies": {
+    "chalk": "^2.4.1",
+    "inquirer": "^6.0.0",
+    "jscodeshift": "matt-gadd/jscodeshift#ef5a272"
+  },
+  "devDependencies": {
+    "@dojo/cli": "^2.0.0",
+    "@dojo/scripts": "^3.0.0-alpha.6",
+    "@types/inquirer": "0.0.42",
+    "@types/node": "^9.6.23",
+    "cpx": "^1.5.0",
+    "npm-run-all": "^4.1.3"
+  }
+}

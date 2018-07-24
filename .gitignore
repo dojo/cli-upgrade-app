@@ -1,0 +1,11 @@
+*.js
+*.js.map
+!/*.js
+/coverage
+/dist
+/node_modules
+.tscache
+.tsconfig*.json
+.history
+npm-debug.log
+yarn.lock
