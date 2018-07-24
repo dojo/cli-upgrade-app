@@ -1,6 +1,6 @@
 {
   "name": "cli-upgrade-app",
-  "version": "1.0.0",
+  "version": "3.0.0-pre",
   "description": "updgrade dojo versions",
   "main": "main",
   "scripts": {
