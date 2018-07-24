@@ -24,7 +24,7 @@ const command: Command = {
 			transform: path.resolve(__dirname, 'transforms', 'module-transform-to-framework.js'),
 			path: glob.sync('{src,tests}/**/*.{ts,tsx}'),
 			verbose: 0,
-			babel: true,
+			babel: false,
 			extensions: 'js',
 			runInBand: false,
 			silent: false
