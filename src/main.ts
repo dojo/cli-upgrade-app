@@ -1,4 +1,5 @@
 import { Command, Helper, OptionsHelper } from '@dojo/cli/interfaces';
+import * as inquirer from 'inquirer';
 const Runner = require('jscodeshift/src/Runner');
 const path = require('path');
 const glob = require('glob')
@@ -34,6 +35,21 @@ const command: Command & { __runner: any } = {
 			extensions: 'js',
 			runInBand: false,
 			silent: false
+		}
+		if (!dry) {
+			return inquirer
+				.prompt({
+					type: 'confirm',
+					name: 'run',
+					message: 'This command will irreversibly modify files. Are you sure you want to run the upgrade? Use the --dry option first if in doubt',
+					default: false
+				})
+				.then((answer: any) => {
+					if (!answer.run) {
+						throw Error('Aborting upgrade');
+					}
+					return command.__runner.run(opts.transform, opts.path, opts);
+				});
 		}
 		return command.__runner.run(opts.transform, opts.path, opts);
 	}

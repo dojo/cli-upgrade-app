@@ -31,11 +31,13 @@
   },
   "homepage": "https://github.com/dojo/cli-upgrade-app#readme",
   "dependencies": {
+    "inquirer": "^6.0.0",
     "jscodeshift": "matt-gadd/jscodeshift#6ccc9fd0b9b7747f392afe6bc46cd1c77eff7731"
   },
   "devDependencies": {
     "@dojo/cli": "^2.0.0",
     "@dojo/scripts": "^3.0.0-alpha.6",
+    "@types/inquirer": "0.0.42",
     "@types/node": "^9.6.23",
     "cpx": "^1.5.0",
     "npm-run-all": "^4.1.3"
