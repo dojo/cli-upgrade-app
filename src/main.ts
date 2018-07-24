@@ -23,7 +23,7 @@ const command: Command & { __runner: any } = {
 			default: false
 		});
 	},
-	run(helper: Helper, args: { pattern: string, dry: boolean }) {
+	run: async (helper: Helper, args: { pattern: string, dry: boolean }) => {
 		const { pattern, dry } = args;
 		const opts = {
 			parser: 'typescript',
@@ -37,19 +37,16 @@ const command: Command & { __runner: any } = {
 			silent: false
 		}
 		if (!dry) {
-			return inquirer
-				.prompt({
-					type: 'confirm',
-					name: 'run',
-					message: 'This command will irreversibly modify files. Are you sure you want to run the upgrade? Use the --dry option first if in doubt',
-					default: false
-				})
-				.then((answer: any) => {
-					if (!answer.run) {
-						throw Error('Aborting upgrade');
-					}
-					return command.__runner.run(opts.transform, opts.path, opts);
-				});
+			const answer = await inquirer.prompt({
+				type: 'confirm',
+				name: 'run',
+				message: 'This command will irreversibly modify files. Are you sure you want to run the upgrade? Use the --dry option first if in doubt',
+				default: false
+			});
+			if (!(answer as any).run) {
+				throw Error('Aborting upgrade');
+			}
+			return command.__runner.run(opts.transform, opts.path, opts);
 		}
 		return command.__runner.run(opts.transform, opts.path, opts);
 	}
