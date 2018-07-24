@@ -1,7 +1,8 @@
 import { Command, Helper, OptionsHelper } from '@dojo/cli/interfaces';
 const Runner = require('jscodeshift/src/Runner');
-const path = require("path");
+const path = require('path');
 const babylon = require('babylon');
+const glob = require('glob')
 
 const command: Command = {
 	group: 'upgrade',
@@ -21,7 +22,7 @@ const command: Command = {
 		const opts = {
 			parser,
 			transform: path.resolve(__dirname, 'transforms', 'module-transform-to-framework.js'),
-			path: [ 'src/main.ts' ],
+			path: glob.sync('{src,tests}/**/*.{ts,tsx}'),
 			verbose: 0,
 			babel: true,
 			extensions: 'js',
