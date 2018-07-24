@@ -1,6 +1,6 @@
 const match = /^@dojo\/(core|has|i18n|widget-core|routing|stores|shim|test-extras)/;
 
-function transform(file: any, api: any) {
+module.exports = function (file: any, api: any) {
 	const j = api.jscodeshift;
 	return j(file.source)
 		.find(j.ImportDeclaration)
@@ -19,5 +19,3 @@ function transform(file: any, api: any) {
 		)
 		.toSource({quote: 'single'});
 }
-
-module.exports = transform;
