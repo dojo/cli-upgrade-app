@@ -4,13 +4,14 @@
   "description": "updgrade dojo versions",
   "main": "main",
   "scripts": {
-	"build:cjs": "tsc",
+    "build:cjs": "tsc",
     "build": "npm-run-all -p build:** -s package",
     "clean": "rimraf dist coverage output test-app/output test-app/node_modules",
     "intern": "intern",
     "lint:tslint": "tslint -p .",
     "lint:prettier": "prettier -l \"{src,tests}/**/*.{ts,tsx}\"",
     "lint": "run-p lint:*",
+    "pack": "cd dist && npm pack -q ./release",
     "package": "dojo-package",
     "precommit": "lint-staged",
     "prettier": "prettier --write \"{src,tests}/**/*.{ts,tsx}\"",
@@ -29,6 +30,11 @@
     "url": "https://github.com/dojo/cli-upgrade-app/issues"
   },
   "homepage": "https://github.com/dojo/cli-upgrade-app#readme",
+  "dependencies": {
+    "babylon": "7.0.0-beta.47",
+    "jscodeshift": "0.5.1",
+    "recast": "0.15.2"
+  },
   "devDependencies": {
     "@dojo/cli": "^2.0.0",
     "@dojo/scripts": "^3.0.0-alpha.6",
