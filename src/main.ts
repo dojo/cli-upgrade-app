@@ -1,8 +1,35 @@
 import { Command, Helper, OptionsHelper } from '@dojo/cli/interfaces';
+import chalk from 'chalk';
 import * as inquirer from 'inquirer';
 const Runner = require('jscodeshift/src/Runner');
 const path = require('path');
-const glob = require('glob')
+const glob = require('glob');
+
+const packages = [
+	'@dojo/core',
+	'@dojo/has',
+	'@dojo/i18n',
+	'@dojo/widget-core',
+	'@dojo/routing',
+	'@dojo/stores',
+	'@dojo/shim',
+	'@dojo/test-extras'
+]
+
+async function run(opts: any) {
+	try {
+		await command.__runner.run(opts.transform, opts.path, opts);
+	} catch (e) {
+		throw Error('Failed to upgrade');
+	}
+	const packageString = packages.join(' ');
+	console.log('');
+	console.log(chalk.bold.green('Upgrade complete, you can now add the new dojo/framework dependency and safely remove deprecated dependencies with the following:'));
+	console.log('install the dojo framework package:');
+	console.log(`    ${chalk.yellow('npm install @dojo/framework')}`);
+	console.log('remove legacy packages:');
+	console.log(`    ${chalk.yellow('npm uninstall -S -D ' + packageString)}`);
+}
 
 const command: Command & { __runner: any } = {
 	__runner: Runner,
@@ -46,9 +73,9 @@ const command: Command & { __runner: any } = {
 			if (!(answer as any).run) {
 				throw Error('Aborting upgrade');
 			}
-			return command.__runner.run(opts.transform, opts.path, opts);
+			return await run(opts);
 		}
-		return command.__runner.run(opts.transform, opts.path, opts);
+		return await run(opts);
 	}
 };
 

@@ -31,6 +31,7 @@
   },
   "homepage": "https://github.com/dojo/cli-upgrade-app#readme",
   "dependencies": {
+    "chalk": "^2.4.1",
     "inquirer": "^6.0.0",
     "jscodeshift": "matt-gadd/jscodeshift#6ccc9fd0b9b7747f392afe6bc46cd1c77eff7731"
   },
