@@ -4,17 +4,15 @@ import * as inquirer from 'inquirer';
 const { after, describe, it } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
 
-
 const prompt = inquirer.prompt;
 const promptStub = (run: boolean) => {
 	(inquirer as any).prompt = () => Promise.resolve({ run });
-}
+};
 const promptRestore = () => {
 	(inquirer as any).prompt = prompt;
-}
+};
 
 describe('main', () => {
-
 	after(() => {
 		promptRestore();
 	});
@@ -40,7 +38,7 @@ describe('main', () => {
 			}
 		};
 		await command.run({} as any, { pattern: 'src/main.ts', dry: false });
-		assert.deepEqual(output.path, [ 'src/main.ts' ]);
+		assert.deepEqual(output.path, ['src/main.ts']);
 	});
 
 	it('should not run when user cancels prompt', async () => {

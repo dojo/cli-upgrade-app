@@ -1,8 +1,10 @@
 const { describe, it } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
 
+import * as os from 'os';
+
 let jscodeshift = require('jscodeshift');
-const moduleTransform = require('../../../src/transforms/module-transform-to-framework');
+import moduleTransform = require('../../../src/transforms/module-transform-to-framework');
 
 jscodeshift = jscodeshift.withParser('typescript');
 
@@ -35,7 +37,9 @@ projector.append();
 describe('module-transform-to-framework', () => {
 	it('should transform legacy package imports to the new dojo/framework package', () => {
 		const output = moduleTransform(input, { jscodeshift, stats: () => {} });
-		assert.equal(output, `
+		assert.equal(
+			output,
+			`
 import { ProjectorMixin } from '@dojo/framework/widget-core/mixins/Projector';
 import { registerRouterInjector } from '@dojo/framework/routing/RouterInjector';
 import harness from '@dojo/framework/testing/harness';
@@ -57,6 +61,9 @@ const Projector = ProjectorMixin(TodoApp);
 const projector = new Projector();
 projector.setProperties({ registry });
 projector.append();
-`);
+`
+				.split(/\r?\n/g)
+				.join(os.EOL)
+		);
 	});
 });
