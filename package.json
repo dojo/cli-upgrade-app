@@ -1,24 +1,24 @@
 {
   "name": "@dojo/cli-upgrade-app",
   "version": "3.0.0-pre",
-  "description": "upgrade dojo versions",
+  "description": "Upgrade a Dojo application to a newer Dojo version",
   "main": "main",
   "scripts": {
     "build:cjs": "tsc",
-    "build": "npm-run-all -p build:** -s package",
-    "clean": "rimraf dist coverage output test-app/output test-app/node_modules",
+    "build": "npm-run-all -p build:** -s dojo-package",
+    "clean": "rimraf dist coverage",
+    "dojo-package": "dojo-package",
+    "dojo-release": "dojo-release",
     "intern": "intern",
     "lint:tslint": "tslint -p .",
     "lint:prettier": "prettier -l \"{src,tests}/**/*.{ts,tsx}\"",
     "lint": "run-p lint:*",
-    "pack": "cd dist && npm pack -q ./release",
-    "package": "dojo-package",
     "precommit": "lint-staged",
     "prettier": "prettier --write \"{src,tests}/**/*.{ts,tsx}\"",
-    "test": "npm run build && intern",
+    "release": "run-s lint clean build \"dojo-release -- {@}\" --",
+    "test": "run-s lint clean build intern",
     "uploadCoverage": "codecov --file=coverage/coverage.json",
-    "watch:ts": "dojo-tsc-watcher -p tsconfig.json -- dojo-package",
-    "watch": "run-p watch:ts \"build:static:** -- --watch\""
+    "watch": "dojo-tsc-watcher -p tsconfig.json -- dojo-package"
   },
   "repository": {
     "type": "git",
@@ -31,16 +31,35 @@
   },
   "homepage": "https://github.com/dojo/cli-upgrade-app#readme",
   "dependencies": {
-    "chalk": "^2.4.1",
-    "inquirer": "^6.0.0",
-    "jscodeshift": "matt-gadd/jscodeshift#ef5a272"
+    "chalk": "2.4.1",
+    "inquirer": "4.0.2",
+    "jscodeshift": "matt-gadd/jscodeshift#ef5a272",
+    "tslib": "1.8.1"
   },
   "devDependencies": {
-    "@dojo/cli": "^2.0.0",
-    "@dojo/scripts": "^3.0.0-alpha.6",
-    "@types/inquirer": "0.0.42",
-    "@types/node": "^9.6.23",
-    "cpx": "^1.5.0",
-    "npm-run-all": "^4.1.3"
+    "@dojo/cli": "~3.0.0",
+    "@dojo/scripts": "~3.0.1",
+    "@types/inquirer": "0.0.35",
+    "@types/node": "~9.6.23",
+    "codecov": "~3.0.4",
+    "cpx": "~1.5.0",
+    "husky": "0.14.3",
+    "lint-staged": "6.0.0",
+    "npm-run-all": "~4.1.3",
+    "rimraf": "~2.6.2"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "prettier": {
+    "singleQuote": true,
+    "tabWidth": 4,
+    "useTabs": true,
+    "parser": "typescript",
+    "printWidth": 120,
+    "arrowParens": "always"
   }
 }
