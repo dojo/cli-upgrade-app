@@ -18,6 +18,7 @@ before_test:
 
 test_script:
   # run tests
+  - npm run lint
   - npm test
 
 after_test:
