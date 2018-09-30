@@ -4,7 +4,7 @@ const { assert } = intern.getPlugin('chai');
 import * as os from 'os';
 
 let jscodeshift = require('jscodeshift');
-import moduleTransform = require('../../../src/transforms/module-transform-to-framework');
+import moduleTransform = require('../../../../src/v3/transforms/module-transform-to-framework');
 
 jscodeshift = jscodeshift.withParser('typescript');
 

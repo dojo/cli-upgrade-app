@@ -1,2 +1,4 @@
 import './main';
-import './transforms/module-transform-to-framework';
+import './DependencyManager';
+import './util';
+import './v3/transforms/module-transform-to-framework';
