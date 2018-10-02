@@ -76,7 +76,7 @@ export class UpgradeCommand implements Command {
 	};
 
 	async runUpgrade(
-		{ version, transforms, dependencies: { add = [], remove = [] } }: VersionConfig,
+		{ version, transforms = [], dependencies: { add = [], remove = [] } = {}, run }: VersionConfig,
 		parser: string,
 		paths: string[],
 		dry: boolean
@@ -109,6 +109,10 @@ export class UpgradeCommand implements Command {
 					() => this.depManager.install(add),
 					dry
 				);
+			}
+
+			if (typeof run === 'function') {
+				run();
 			}
 
 			if (version === LATEST_VERSION) {

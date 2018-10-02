@@ -129,4 +129,18 @@ describe('main', () => {
 		assert.isTrue(codemodStub.notCalled);
 		assert.strictEqual(message, 'Aborting upgrade.');
 	});
+
+	it("calls a config's run method if it exists", async () => {
+		const runStub = sandbox.stub();
+		sandbox.stub(command, 'getConfigs').resolves([
+			{
+				version: 2,
+				run: runStub
+			}
+		]);
+
+		promptStub.resolves(true);
+		await command.run({} as any, { pattern: 'src/main.ts', dry: false });
+		assert.isTrue(runStub.called);
+	});
 });
