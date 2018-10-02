@@ -79,7 +79,7 @@ export class DependencyManager {
 		}
 
 		await run('npm', args);
-		await this.getPackageData();
+		this.getPackageData();
 	}
 
 	async uninstall(pkg: string): Promise<void>;
@@ -92,12 +92,12 @@ export class DependencyManager {
 		}
 
 		await run('npm', ['uninstall', ...packages]);
-		await this.getPackageData();
+		this.getPackageData();
 	}
 
 	async updateDependencies(version: string): Promise<void> {
-		const deps = (await this.getDependencies()).filter((dep) => dep.name.includes('@dojo') && !dep.isDevDependency);
-		const devDeps = (await this.getDependencies()).filter(
+		const deps = (this.getDependencies()).filter((dep) => dep.name.includes('@dojo') && !dep.isDevDependency);
+		const devDeps = (this.getDependencies()).filter(
 			(dep) => dep.name.includes('@dojo') && dep.isDevDependency
 		);
 		await this.install(deps.map(({ name }) => `${name}@${version}`));

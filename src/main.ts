@@ -53,7 +53,7 @@ export class UpgradeCommand implements Command {
 		const toVersion = LATEST_VERSION;
 
 		if (toVersion <= fromVersion) {
-			throw Error(`Attempt to upgrade from ${fromVersion} to ${toVersion} not allowed. Exiting.`);
+			throw Error(`Your app is at version ${fromVersion} which is greater than or equal to the latest version (${toVersion}). There is nothing to do. Exiting.`);
 		}
 
 		if (!dry) {
@@ -125,7 +125,6 @@ export class UpgradeCommand implements Command {
 				);
 			}
 		} catch (error) {
-			console.error(error);
 			throw Error('Failed to upgrade');
 		}
 	}
