@@ -70,9 +70,10 @@ export class UpgradeCommand implements Command {
 			}
 		}
 
-		await Promise.all(
-			(await this.getConfigs(fromVersion, toVersion)).map((config) => this.runUpgrade(config, parser, paths, dry))
-		);
+		const configs = await this.getConfigs(fromVersion, toVersion);
+		for (const config of configs) {
+			await this.runUpgrade(config, parser, paths, dry);
+		}
 	};
 
 	async runUpgrade(
