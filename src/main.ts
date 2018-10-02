@@ -53,7 +53,9 @@ export class UpgradeCommand implements Command {
 		const toVersion = LATEST_VERSION;
 
 		if (toVersion <= fromVersion) {
-			throw Error(`Your app is at version ${fromVersion} which is greater than or equal to the latest version (${toVersion}). There is nothing to do. Exiting.`);
+			throw Error(
+				`Your app is at version ${fromVersion} which is greater than or equal to the latest version (${toVersion}). There is nothing to do. Exiting.`
+			);
 		}
 
 		if (!dry) {

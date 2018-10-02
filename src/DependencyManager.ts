@@ -96,10 +96,8 @@ export class DependencyManager {
 	}
 
 	async updateDependencies(version: string): Promise<void> {
-		const deps = (this.getDependencies()).filter((dep) => dep.name.includes('@dojo') && !dep.isDevDependency);
-		const devDeps = (this.getDependencies()).filter(
-			(dep) => dep.name.includes('@dojo') && dep.isDevDependency
-		);
+		const deps = this.getDependencies().filter((dep) => dep.name.includes('@dojo') && !dep.isDevDependency);
+		const devDeps = this.getDependencies().filter((dep) => dep.name.includes('@dojo') && dep.isDevDependency);
 		await this.install(deps.map(({ name }) => `${name}@${version}`));
 		await this.install(devDeps.map(({ name }) => `${name}@${version}`), true);
 	}
