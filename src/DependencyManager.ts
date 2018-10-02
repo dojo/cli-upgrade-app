@@ -1,5 +1,6 @@
 import { resolve } from 'path';
-import { readFile, run } from './util';
+import { run } from './util';
+import { readFileSync } from 'fs';
 import { coerce } from 'semver';
 
 export const LATEST_VERSION = 4;
@@ -29,41 +30,34 @@ interface PackageJson {
 
 export class DependencyManager {
 	private json: PackageJson;
-	private loadPromise: Promise<PackageJson>;
 	path: string;
 
 	constructor(path: string = resolve(process.cwd(), 'package.json')) {
 		this.setPackagePath(path);
 	}
 
-	private getPackageData(redownload?: boolean): Promise<PackageJson> {
-		if (redownload || !this.loadPromise) {
-			this.loadPromise = new Promise<PackageJson>(async (resolve, reject) => {
-				try {
-					const jsonString = await readFile(this.path, { encoding: 'utf8' });
-					this.json = JSON.parse(jsonString);
-					resolve(this.json);
-				} catch (error) {
-					reject(Error('Unable to load package.json. Aborting upgrade.'));
-				}
-			});
+	private getPackageData(): PackageJson {
+		try {
+			const jsonString = readFileSync(this.path, { encoding: 'utf8' });
+			this.json = JSON.parse(jsonString);
+		} catch (error) {
+			throw Error('Unable to load package.json. Aborting upgrade.');
 		}
 
-		return this.loadPromise;
+		return this.json;
 	}
 
-	async setPackagePath(path: string): Promise<void> {
+	setPackagePath(path: string): void {
 		this.path = path;
-		await this.getPackageData(true);
+		this.getPackageData();
 	}
 
-	async getPackageVersion(): Promise<string> {
-		await this.getPackageData();
+	getPackageVersion(): string {
 		return this.json.version;
 	}
 
-	async getDojoVersion(): Promise<number> {
-		const deps = await this.getDependencies();
+	getDojoVersion(): number {
+		const deps = this.getDependencies();
 		return deps.filter((dep) => dep.name.includes('@dojo')).reduce((minVersion, { major }) => {
 			return major < minVersion ? major : minVersion;
 		}, Infinity);
@@ -85,7 +79,7 @@ export class DependencyManager {
 		}
 
 		await run('npm', args);
-		await this.getPackageData(true);
+		await this.getPackageData();
 	}
 
 	async uninstall(pkg: string): Promise<void>;
@@ -98,7 +92,7 @@ export class DependencyManager {
 		}
 
 		await run('npm', ['uninstall', ...packages]);
-		await this.getPackageData(true);
+		await this.getPackageData();
 	}
 
 	async updateDependencies(version: string): Promise<void> {
@@ -110,8 +104,7 @@ export class DependencyManager {
 		await this.install(devDeps.map(({ name }) => `${name}@${version}`), true);
 	}
 
-	async getDependencies(): Promise<Dependency[]> {
-		await this.getPackageData();
+	getDependencies(): Dependency[] {
 		const { dependencies: deps = {}, devDependencies: devDeps = {} } = this.json;
 		const transform = (deps: { [name: string]: string }, isDevDependency: boolean = false) => {
 			return Object.keys(deps).map((name) => {

@@ -1,10 +1,5 @@
-import { readFile as nodeReadFile, writeFile as nodeWriteFile } from 'fs';
-import { promisify } from 'util';
 const { spawn } = require('cross-spawn');
 const { promise: ora }: any = require('ora');
-
-export const readFile = promisify(nodeReadFile);
-export const writeFile = promisify(nodeWriteFile);
 
 export interface TaskOptions {
 	text: string;

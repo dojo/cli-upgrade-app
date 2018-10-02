@@ -19,9 +19,7 @@ export const config: VersionConfig = {
 		updateVersion: '^3.0.0'
 	},
 
-	run() {
-		console.log('hello, world');
-	}
+	run() {}
 };
 
 export default config;

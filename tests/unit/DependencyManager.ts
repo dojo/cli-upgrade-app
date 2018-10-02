@@ -33,16 +33,17 @@ const packageJson = JSON.parse(packageString);
 describe('DependencyManager', () => {
 	let depManager: DependencyManager;
 	let mockModule: MockModule;
-	let utilStub: any;
+	let runStub: any;
+	let readFileStub: any;
 	let sandbox: sinon.SinonSandbox;
 	let MockDependencyManager: typeof DependencyManager;
 
 	beforeEach(() => {
 		sandbox = sinon.sandbox.create();
 		mockModule = new MockModule('../../src/DependencyManager', require);
-		mockModule.dependencies(['./util']);
-		utilStub = mockModule.getMock('./util');
-		utilStub.readFile.resolves(packageString);
+		mockModule.dependencies(['./util', 'fs']);
+		runStub = mockModule.getMock('./util').run;
+		readFileStub = mockModule.getMock('fs').readFileSync.returns(packageString);
 		MockDependencyManager = mockModule.getModuleUnderTest().default;
 		depManager = new MockDependencyManager();
 	});
@@ -53,11 +54,7 @@ describe('DependencyManager', () => {
 	});
 
 	describe('instantiation', () => {
-		beforeEach(() => {
-			utilStub.readFile.resolves(packageString);
-		});
-
-		it('defaults to a relative package.json', async () => {
+		it('defaults to a relative package.json', () => {
 			depManager = new MockDependencyManager();
 			assert.strictEqual(depManager.path, resolve(process.cwd(), 'package.json'));
 		});
@@ -68,31 +65,26 @@ describe('DependencyManager', () => {
 			assert.strictEqual(depManager.path, path);
 		});
 
-		it('throws an error if the path is not valid', async () => {
-			let message = '';
-			utilStub.readFile.rejects('');
-			try {
-				await depManager.setPackagePath('fake');
-			} catch (error) {
-				message = error.message;
-			}
-
-			assert.strictEqual(message, 'Unable to load package.json. Aborting upgrade.');
+		it('throws an error if the path is not valid', () => {
+			readFileStub.throws('');
+			assert.throws(() => {
+				depManager.setPackagePath('fake');
+			}, 'Unable to load package.json. Aborting upgrade.');
 		});
 	});
 
-	it('reloads the package.json when the path is changed', async () => {
-		await depManager.setPackagePath('newpath.json');
-		assert.isTrue(utilStub.readFile.calledTwice);
+	it('reloads the package.json when the path is changed', () => {
+		depManager.setPackagePath('newpath.json');
+		assert.isTrue(readFileStub.calledTwice);
 	});
 
-	it('returns the current package version', async () => {
-		const version = await depManager.getPackageVersion();
+	it('returns the current package version', () => {
+		const version = depManager.getPackageVersion();
 		assert.strictEqual(version, packageJson.version);
 	});
 
-	it('should return the minimum Dojo version based on installed Dojo packages', async () => {
-		const version = await depManager.getDojoVersion();
+	it('should return the minimum Dojo version based on installed Dojo packages', () => {
+		const version = depManager.getDojoVersion();
 		assert.strictEqual(version, 2);
 	});
 
@@ -100,45 +92,45 @@ describe('DependencyManager', () => {
 		const toInstall = '@dojo/framework';
 		const expectedArgs = ['npm', ['install', toInstall]];
 		await depManager.install(toInstall);
-		assert.isTrue(utilStub.run.calledWith(...expectedArgs));
+		assert.isTrue(runStub.calledWith(...expectedArgs));
 	});
 
 	it('should correctly construct install commands for dev dependencies', async () => {
 		const toInstall = '@dojo/cli-upgrade-app';
 		const expectedArgs = ['npm', ['install', toInstall, '--save-dev']];
 		await depManager.install(toInstall, true);
-		assert.isTrue(utilStub.run.calledWith(...expectedArgs));
+		assert.isTrue(runStub.calledWith(...expectedArgs));
 	});
 
 	it('can install more than one dependency at a time', async () => {
 		const toInstall = ['@dojo/core', '@dojo/widget-core'];
 		const expectedArgs = ['npm', ['install', ...toInstall]];
 		await depManager.install(toInstall);
-		assert.isTrue(utilStub.run.calledWith(...expectedArgs));
+		assert.isTrue(runStub.calledWith(...expectedArgs));
 	});
 
 	it('should do nothing if no packages are provided to install', async () => {
 		await depManager.install([]);
-		assert.isTrue(utilStub.run.notCalled);
+		assert.isTrue(runStub.notCalled);
 	});
 
 	it('can uninstall a package', async () => {
 		const toUninstall = '@dojo/core';
 		const expectedArgs = ['npm', ['uninstall', toUninstall]];
 		await depManager.uninstall(toUninstall);
-		assert.isTrue(utilStub.run.calledWith(...expectedArgs));
+		assert.isTrue(runStub.calledWith(...expectedArgs));
 	});
 
 	it('can uninstall more than one package at a time', async () => {
 		const toUninstall = ['@dojo/core', '@dojo/widget-core'];
 		const expectedArgs = ['npm', ['uninstall', ...toUninstall]];
 		await depManager.uninstall(toUninstall);
-		assert.isTrue(utilStub.run.calledWith(...expectedArgs));
+		assert.isTrue(runStub.calledWith(...expectedArgs));
 	});
 
 	it('should do nothing if no packages are provided to uninstall', async () => {
 		await depManager.uninstall([]);
-		assert.isTrue(utilStub.run.notCalled);
+		assert.isTrue(runStub.notCalled);
 	});
 
 	it('can update all Dojo dependencies to a specified version', async () => {

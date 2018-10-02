@@ -34,7 +34,7 @@ describe('main', () => {
 		command = new (mockModule.getModuleUnderTest()).UpgradeCommand(mockDepManager);
 
 		// default behavior
-		getDojoVersionStub.resolves(2);
+		getDojoVersionStub.returns(2);
 		uninstallStub.resolves();
 		installStub.resolves();
 		updateDependenciesStub.resolves();
