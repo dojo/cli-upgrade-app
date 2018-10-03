@@ -8,7 +8,7 @@ import { VersionConfig } from './interfaces';
 const { run: runCodemod } = require('jscodeshift/src/Runner');
 const glob = require('glob');
 
-export const LATEST_VERSION = 3;
+export const LATEST_VERSION = 4;
 
 export class UpgradeCommand implements Command {
 	private depManager: DependencyManager;

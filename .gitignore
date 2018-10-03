@@ -1,11 +1,10 @@
-*.js
-*.js.map
-!/*.js
 /coverage
 /dist
 /node_modules
+/temp
 .tscache
 .tsconfig*.json
 .history
 npm-debug.log
 yarn.lock
+/src/v4/core

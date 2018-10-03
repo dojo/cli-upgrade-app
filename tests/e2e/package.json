@@ -1,0 +1,15 @@
+{
+  "name": "e2e",
+  "version": "1.0.0",
+  "dependencies": {
+    "@dojo/cli-upgrade-app": "file:../../dist/dojo-cli-upgrade-app-3.0.2.tgz",
+    "@dojo/framework": "~3.0.0",
+    "tslib": "~1.8.1"
+  },
+  "devDependencies": {
+    "@dojo/cli-build-app": "~3.0.0",
+    "@dojo/cli-test-intern": "~3.0.0",
+    "@types/node": "~9.6.5",
+    "typescript": "~2.6.1"
+  }
+}
