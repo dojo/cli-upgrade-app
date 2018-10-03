@@ -63,7 +63,7 @@ describe('main', () => {
 	it('runs a version-specific config', async () => {
 		sandbox.stub(command, 'getConfigs').resolves([
 			{
-				version: 3,
+				version: 4,
 				transforms: ['test/transform.js'],
 				dependencies: {
 					add: ['@dojo/frameowrk'],
@@ -82,7 +82,7 @@ describe('main', () => {
 	it("won't call install or uninstall if there is nothing to do", async () => {
 		sandbox.stub(command, 'getConfigs').resolves([
 			{
-				version: 3,
+				version: 4,
 				transforms: ['test/transform.js'],
 				dependencies: {
 					add: [],

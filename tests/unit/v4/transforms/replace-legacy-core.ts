@@ -1,14 +1,20 @@
-const { describe, it } = intern.getInterface('bdd');
+const { describe, it, after } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
 
+import * as rimraf from 'rimraf';
 import * as os from 'os';
 
 let jscodeshift = require('jscodeshift');
-import moduleTransform = require('../../../../src/v4/transforms/module-transform-legacy-core');
+import moduleTransform = require('../../../../src/v4/transforms/replace-legacy-core');
 
 jscodeshift = jscodeshift.withParser('typescript');
 
-describe('module-transform-legacy-core', () => {
+describe('replace-legacy-core', () => {
+	after(() => {
+		// This test will try to copy core into the src directory
+		rimraf.sync('src/core');
+	});
+
 	it('should transform legacy package imports to local copies', () => {
 		const input = {
 			path: 'src/index.ts',

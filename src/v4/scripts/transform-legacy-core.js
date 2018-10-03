@@ -11,7 +11,9 @@ module.exports = function (file, api) {
 			if (matches) {
 				const [ /* match */, pkg, rest ] = matches;
 				source.value = `@dojo/framework/${pkg}/${rest}`;
-				return { ...p.node, source: { ...source } };
+				return Object.assign({
+					source: Object.assign({}, source)
+				}, p.node);
 			}
 			return p.node;
 		})

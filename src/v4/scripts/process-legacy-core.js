@@ -13,14 +13,6 @@ const v4Path = path.resolve(__dirname, '../');
 /** @type {{ [coreImport: string]: string[]; }} */
 const deps = {};
 
-async function runTransform(options) {
-	try {
-		await Runner.run(options.transform, options.path, options);
-	} catch (e) {
-		console.log(e);
-	}
-}
-
 // Copy core src
 rimraf.sync(`${v4Path}/core`);
 rimraf.sync('temp');
@@ -44,7 +36,7 @@ fs.writeFileSync(`${v4Path}/core/dependencies.json`, JSON.stringify(deps, null, 
 
 const opts = {
 	parser: 'typescript',
-	transform: path.resolve(__dirname, './module-transform.js'),
+	transform: path.resolve(__dirname, './transform-legacy-core.js'),
 	path: paths,
 	verbose: 1,
 	babel: false,
@@ -53,8 +45,10 @@ const opts = {
 	runInBand: false,
 	silent: false
 };
-runTransform(opts);
 
-// copy files
-cpx.copySync('src/v4/core/**/*.{ts,d.ts,json}', 'dist/release/v4/core');
-cpx.copySync('src/v4/core/**/*.{ts,d.ts,json}', 'dist/dev/src/v4/core');
+Runner.run(opts.transform, opts.path, opts)
+	.then(() => {
+		// copy files
+		cpx.copySync('src/v4/core/**/*.{ts,d.ts,json}', 'dist/release/v4/core');
+		cpx.copySync('src/v4/core/**/*.{ts,d.ts,json}', 'dist/dev/src/v4/core');
+	});

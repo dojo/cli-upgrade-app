@@ -4,11 +4,11 @@ const { assert } = intern.getPlugin('chai');
 import * as os from 'os';
 
 let jscodeshift = require('jscodeshift');
-import moduleTransform = require('../../../../src/v4/scripts/module-transform');
+import moduleTransform = require('../../../../src/v4/scripts/transform-legacy-core');
 
 jscodeshift = jscodeshift.withParser('typescript');
 
-describe('module-transform-legacy-core', () => {
+describe('transform-legacy-core', () => {
 	it('should transform legacy package imports to local copies', () => {
 		/**
 		 * Source from {@link https://github.com/dojo/framework/blob/v3.0.1/src/core/request.ts @dojo/framework/core/request.ts}
