@@ -10,8 +10,10 @@ const cpx = require('cpx');
 const coreDir = 'src/v4/core';
 const v4Path = path.resolve(__dirname, '../');
 
-/** @type {{ [coreImport: string]: string[]; }} */
-const deps = {};
+interface DependencyMap {
+	[coreImport: string]: string[];
+}
+const deps: DependencyMap = {};
 
 // Copy core src
 rimraf.sync(`${v4Path}/core`);
@@ -21,12 +23,14 @@ fs.renameSync('temp/src/core', `${v4Path}/core`);
 rimraf.sync('temp');
 
 // Generate dependency list
-const paths = glob.sync(`${coreDir}/**/*.ts`);
+const paths: string[] = glob.sync(`${coreDir}/**/*.ts`);
 paths.forEach((filename) => {
-	const list = dependencyTree.toList({
-		filename: filename,
-		directory: coreDir
-	}).map((dep) => dep.replace(`${v4Path}/`, ''));
+	const list = dependencyTree
+		.toList({
+			filename: filename,
+			directory: coreDir
+		})
+		.map((dep: string) => dep.replace(`${v4Path}/`, ''));
 	list.pop();
 	deps[filename.replace(`src/v4/`, '')] = list;
 });
@@ -34,9 +38,16 @@ paths.forEach((filename) => {
 deps['core/request.ts'].push('core/request/providers/node.ts', ...deps['core/request/providers/node.ts']);
 fs.writeFileSync(`${v4Path}/core/dependencies.json`, JSON.stringify(deps, null, '\t'));
 
+let transform: string;
+if (__dirname.includes('/dist/')) {
+	transform = path.resolve(__dirname, './transform-legacy-core.js');
+} else {
+	// running from src dir
+	transform = path.resolve(__dirname, '../../../dist/cjs/src/v4/scripts/transform-legacy-core.js');
+}
 const opts = {
 	parser: 'typescript',
-	transform: path.resolve(__dirname, './transform-legacy-core.js'),
+	transform,
 	path: paths,
 	verbose: 1,
 	babel: false,
@@ -46,9 +57,13 @@ const opts = {
 	silent: false
 };
 
-Runner.run(opts.transform, opts.path, opts)
-	.then(() => {
+let response = Runner.run(opts.transform, opts.path, opts);
+if (response) {
+	response.then(() => {
 		// copy files
 		cpx.copySync('src/v4/core/**/*.{ts,d.ts,json}', 'dist/release/v4/core');
 		cpx.copySync('src/v4/core/**/*.{ts,d.ts,json}', 'dist/dev/src/v4/core');
 	});
+} else {
+	throw Error('Runner did not return');
+}
