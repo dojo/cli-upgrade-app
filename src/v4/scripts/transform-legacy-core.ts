@@ -1,4 +1,4 @@
-const matchImportsExports = require('../matchImportsExports');
+import matchImportsExports from '../matchImportsExports';
 const match = /\/(shim|has)\/(.*)/;
 
 export default function transformLegacyCore(file: any, api: any) {

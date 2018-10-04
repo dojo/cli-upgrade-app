@@ -1,4 +1,4 @@
-module.exports = function matchImportsExports(node: any) {
+export default function matchImportsExports(node: any) {
 	const { source, type } = node;
 	if (
 		type === 'ImportDeclaration' ||
@@ -8,4 +8,4 @@ module.exports = function matchImportsExports(node: any) {
 		return true;
 	}
 	return false;
-};
+}

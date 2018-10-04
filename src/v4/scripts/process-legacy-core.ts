@@ -30,7 +30,7 @@ paths.forEach((filename) => {
 			filename: filename,
 			directory: coreDir
 		})
-		.map((dep: string) => dep.replace(`${v4Path}/`, ''));
+		.map((dep: string) => path.relative(v4Path, dep));
 	list.pop();
 	deps[filename.replace(`src/v4/`, '')] = list;
 });
@@ -38,16 +38,9 @@ paths.forEach((filename) => {
 deps['core/request.ts'].push('core/request/providers/node.ts', ...deps['core/request/providers/node.ts']);
 fs.writeFileSync(`${v4Path}/core/dependencies.json`, JSON.stringify(deps, null, '\t'));
 
-let transform: string;
-if (__dirname.includes('/dist/')) {
-	transform = path.resolve(__dirname, './transform-legacy-core.js');
-} else {
-	// running from src dir
-	transform = path.resolve(__dirname, '../../../dist/cjs/src/v4/scripts/transform-legacy-core.js');
-}
 const opts = {
 	parser: 'typescript',
-	transform,
+	transform: process.cwd() + '/dist/cjs/src/v4/scripts/transform-legacy-core.js',
 	path: paths,
 	verbose: 1,
 	babel: false,
