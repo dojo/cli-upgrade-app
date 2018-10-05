@@ -79,28 +79,42 @@ export class UpgradeCommand implements Command {
 	};
 
 	async runUpgrade(
-		{ version, transforms = [], dependencies: { add = [], remove = [] } = {}, run }: VersionConfig,
+		{ version, transforms = [], dependencies: { add = [], remove = [] } = {}, run, postTransform }: VersionConfig,
 		parser: string,
 		paths: string[],
 		dry: boolean
 	) {
-		console.log('\n' + chalk.bold.cyan(`Running version ${version} upgrade scripts.`));
+		console.log('\n' + chalk.bold.cyan(`Running version ${version} upgrade scripts.`) + '\n');
 		try {
 			for (const transform of transforms) {
-				await runCodemod(transform, paths, {
+				let transformPath: string;
+				let loggingOnly = false;
+
+				if (typeof transform === 'string') {
+					transformPath = transform;
+				} else {
+					transformPath = transform.path;
+					loggingOnly = !!transform.loggingOnly;
+				}
+
+				await runCodemod(transformPath, paths, {
 					parser,
 					verbose: 0,
 					babel: false,
-					dry,
+					dry: loggingOnly || dry,
 					extensions: 'js',
-					runInBand: false,
-					silent: false
+					runInBand: loggingOnly,
+					silent: loggingOnly
 				});
+			}
+
+			if (postTransform) {
+				postTransform();
 			}
 
 			if (remove.length) {
 				await runTask(
-					`Removing the following packages: ${remove.join(',')}`,
+					`Removing the following packages: ${remove.join(', ')}`,
 					() => this.depManager.uninstall(remove),
 					dry
 				);
@@ -108,7 +122,7 @@ export class UpgradeCommand implements Command {
 
 			if (add.length) {
 				await runTask(
-					`Installing the following packages: ${add.join(',')}`,
+					`Installing the following packages: ${add.join(', ')}`,
 					() => this.depManager.install(add),
 					dry
 				);
