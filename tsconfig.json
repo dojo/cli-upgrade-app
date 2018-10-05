@@ -1,6 +1,7 @@
 {
 	"extends": "./node_modules/@dojo/scripts/tsconfig/commonjs.json",
 	"compilerOptions": {
+		"allowJs": true,
 		"declaration": false,
 		"target": "es2015",
 		"types": [ "intern" ],
@@ -19,5 +20,9 @@
 	"include": [
 		"./src/**/*.ts",
 		"./tests/**/*.ts"
+	],
+	"exclude": [
+		"./src/v4/core",
+		"./tests/e2e"
 	]
 }
