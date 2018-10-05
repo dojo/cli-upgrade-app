@@ -1,6 +1,6 @@
 import { resolve } from 'path';
 import { VersionConfig } from '../interfaces';
-import logger from './Logger';
+import logger from '../Logger';
 
 export const config: VersionConfig = {
 	version: 4,
