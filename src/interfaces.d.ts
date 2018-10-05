@@ -7,6 +7,7 @@ export interface Dependencies {
 export interface Transform {
 	path: string;
 	loggingOnly?: boolean;
+	description?: string;
 }
 
 export interface VersionConfig {

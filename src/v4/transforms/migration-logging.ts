@@ -1,9 +1,9 @@
 import chalk from 'chalk';
+import { error, warning } from 'log-symbols';
 
-const warningSymbol = process.platform === 'win32' ? '!!' : '⚠';
-
-function log(message: string): void {
-	console.log(chalk.yellow(warningSymbol) + '  ' + message);
+function log(message: string, type: 'warning' | 'error' = 'warning'): void {
+	const icon = type === 'error' ? chalk.bold.red(error) : chalk.bold.yellow(warning);
+	console.log(`${icon}  ${message}`);
 }
 
 type Collection = any;
@@ -60,8 +60,8 @@ export default function(file: any, api: any) {
 		const { name: outletName } = getImportedLocals(outletPath).reduce(
 			(value: { name: string; isDefault: boolean }, path: Path) => (path.isDefault ? path : value)
 		);
-		if (root.find(j.CallExpression, { callee : { name: outletName } }).paths().length) {
-			log(`${file.path}: Outlet is no longer a higher order component.`);
+		if (root.find(j.CallExpression, { callee: { name: outletName } }).paths().length) {
+			log(`${file.path}: Outlet is no longer a higher order component.`, 'error');
 		}
 	}
 
@@ -79,7 +79,7 @@ export default function(file: any, api: any) {
 		});
 
 		if (found) {
-			log(`${file.path}: onEnter/onExit router config properties are no longer supported.`);
+			log(`${file.path}: onEnter/onExit router config properties are no longer supported.`, 'error');
 		}
 	}
 }

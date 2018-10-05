@@ -4,6 +4,7 @@ import { prompt } from 'inquirer';
 import DependencyManager from './DependencyManager';
 import { runTask } from './util';
 import { VersionConfig } from './interfaces';
+import * as logSymbols from 'log-symbols';
 
 const { run: runCodemod } = require('jscodeshift/src/Runner');
 const glob = require('glob');
@@ -89,23 +90,38 @@ export class UpgradeCommand implements Command {
 			for (const transform of transforms) {
 				let transformPath: string;
 				let loggingOnly = false;
+				let description: string;
 
 				if (typeof transform === 'string') {
 					transformPath = transform;
+					description = transform;
 				} else {
 					transformPath = transform.path;
 					loggingOnly = !!transform.loggingOnly;
+					description = transform.description || transformPath;
 				}
 
-				await runCodemod(transformPath, paths, {
+				console.log(`${chalk.cyan(`\n${logSymbols.info} Running transform:`)} ${description}\n`);
+
+				const results = await runCodemod(transformPath, paths, {
 					parser,
 					verbose: 0,
 					babel: false,
 					dry: loggingOnly || dry,
 					extensions: 'js',
 					runInBand: false,
-					silent: loggingOnly
+					silent: true
 				});
+
+				console.log('\n' + chalk.bold.green(logSymbols.success + '  transform complete.'));
+				console.log(
+					[
+						chalk.red(`${results.error} Errors`),
+						chalk.green(`${results.ok} OK`),
+						chalk.dim(`${results.skip} Skipped`),
+						chalk.blueBright(`${results.nochange} Unchanged`)
+					].join(' ') + '\n'
+				);
 			}
 
 			if (postTransform) {
@@ -141,7 +157,7 @@ export class UpgradeCommand implements Command {
 				);
 			}
 		} catch (error) {
-			throw Error('Failed to upgrade');
+			throw Error('Failed to upgrade.');
 		}
 	}
 }
