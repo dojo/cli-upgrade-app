@@ -1,6 +1,5 @@
 import { resolve } from 'path';
 import { VersionConfig } from '../interfaces';
-import logger from '../Logger';
 
 export const config: VersionConfig = {
 	version: 4,
@@ -8,6 +7,7 @@ export const config: VersionConfig = {
 		resolve(__dirname, 'transforms', 'replace-legacy-core.js'),
 		{ path: resolve(__dirname, 'transforms', 'migration-logging.js'), loggingOnly: true }
 	],
+
 	dependencies: {
 		add: [],
 		remove: [],
@@ -15,10 +15,10 @@ export const config: VersionConfig = {
 	},
 
 	postTransform() {
-		logger.flush();
-	},
-
-	run() {}
+		console.log(
+			'\n\nFor more information about changes in Dojo 4, please check out the migration guide at https://github.com/dojo/framework/blob/master/docs/V4-Migration-Guide.md\n\n'
+		);
+	}
 };
 
 export default config;

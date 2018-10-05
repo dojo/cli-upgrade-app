@@ -134,7 +134,6 @@ describe('main', () => {
 		await command.run({} as any, { pattern: 'src/main.ts', dry: false });
 		const config = codemodStub.getCall(0).args[2];
 		assert.isTrue(config.dry);
-		assert.isTrue(config.runInBand);
 		assert.isTrue(config.silent);
 	});
 

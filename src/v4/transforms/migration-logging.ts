@@ -1,18 +1,10 @@
 import chalk from 'chalk';
-import logger from '../../logger';
 
 const warningSymbol = process.platform === 'win32' ? '!!' : '⚠';
 
-const message = `
-${chalk.yellow(`${warningSymbol}  Dojo 4 Breaking Changes`)}
-
-Dojo 4 introduces a number of breaking changes, some of which have been detected in your project.
-Please refer to the Dojo 4 Migration Guide for more information
-
-<LINK TO MIGRATION GUIDE>
-
-`.trim();
-const log = logger.register('v4-changes', message);
+function log(message: string): void {
+	console.log(chalk.yellow(warningSymbol) + '  ' + message);
+}
 
 type Collection = any;
 type JSCodeShift = any;
@@ -59,12 +51,18 @@ export default function(file: any, api: any) {
 
 	// log the path if the location is importing the ProjectorMixin
 	if (!!getImport(j, root, '@dojo/framework/widget-core/mixins/Projector')) {
-		log(file.path);
+		log(`${file.path}: Use of ProjectorMixin is deprecated.`);
 	}
 
 	// log the path if the loction is importing outlets
-	if (!!getImport(j, root, '@dojo/framework/routing/Outlet')) {
-		log(file.path);
+	const outletPath = getImport(j, root, '@dojo/framework/routing/Outlet');
+	if (!!outletPath) {
+		const { name: outletName } = getImportedLocals(outletPath).reduce(
+			(value: { name: string; isDefault: boolean }, path: Path) => (path.isDefault ? path : value)
+		);
+		if (root.find(j.CallExpression, { callee : { name: outletName } }).paths().length) {
+			log(`${file.path}: Outlet is no longer a higher order component.`);
+		}
 	}
 
 	const routerPath = getImport(j, root, '@dojo/framework/routing/Router');
@@ -81,7 +79,7 @@ export default function(file: any, api: any) {
 		});
 
 		if (found) {
-			log(file.path);
+			log(`${file.path}: onEnter/onExit router config properties are no longer supported.`);
 		}
 	}
 }

@@ -1,10 +1,9 @@
-import {
+import transform, {
 	getImport,
 	getImportedLocals,
 	getDeclaratorValue,
 	getArgument
 } from '../../../../src/v4/transforms/migration-logging';
-import MockModule from '../../../support/MockModule';
 import * as sinon from 'sinon';
 
 const j = require('jscodeshift').withParser('typescript');
@@ -117,23 +116,16 @@ describe('v4/module-logging', () => {
 	});
 
 	describe('the transform', () => {
-		let mockModule: MockModule;
 		let sandbox: sinon.SinonSandbox;
 		let loggerStub: sinon.SinonStub;
-		let transform: Function;
 
 		beforeEach(() => {
 			sandbox = sinon.sandbox.create();
-			mockModule = new MockModule('../../../../src/v4/transforms/migration-logging', require);
-			mockModule.dependencies(['../../logger']);
-			loggerStub = sandbox.stub();
-			mockModule.getMock('../../logger').default.register = () => loggerStub;
-			transform = mockModule.getModuleUnderTest().default;
+			loggerStub = sandbox.stub(console, 'log');
 		});
 
 		afterEach(() => {
 			sandbox.restore();
-			mockModule.destroy();
 		});
 
 		it('is a function', () => {
@@ -147,9 +139,27 @@ describe('v4/module-logging', () => {
 		});
 
 		it('should log the file because it is using the Outlet', () => {
-			const source = `import Outlet from '@dojo/framework/routing/Outlet';`;
+			const source = `
+			import Outlet from '@dojo/framework/routing/Outlet';
+			export default Outlet({
+				index: MyIndexWidget,
+				main: MyMainWidget
+			},
+			'outlet-id',
+			{
+				mapParams: (matchDetails) => {
+					return { id: matchDetails.param.id };
+				}
+			});
+			`;
 			transform({ source, path: 'test.ts' }, { jscodeshift: j, stats: () => {} });
 			assert.isTrue(loggerStub.calledOnce, 'the logger shold have been called');
+		});
+
+		it('should not log the file because it is using the Outlet appropriately', () => {
+			const source = `import Outlet from '@dojo/framework/routing/Outlet';`;
+			transform({ source, path: 'test.ts' }, { jscodeshift: j, stats: () => {} });
+			assert.isFalse(loggerStub.called, 'the logger shold have been called');
 		});
 
 		it('should log the file because it is importing the Router and passing onEnter to the config', () => {

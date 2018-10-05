@@ -103,7 +103,7 @@ export class UpgradeCommand implements Command {
 					babel: false,
 					dry: loggingOnly || dry,
 					extensions: 'js',
-					runInBand: loggingOnly,
+					runInBand: false,
 					silent: loggingOnly
 				});
 			}
