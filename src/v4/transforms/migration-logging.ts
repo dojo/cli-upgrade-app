@@ -39,50 +39,66 @@ onEnter and onExit usage has been detected in the following files:
 `.trim();
 const routingLog = logger.registerLogger('routing', routingMessage);
 
+type Collection = any;
+type JSCodeShift = any;
+type Path = any;
+type Expression = any;
+
+export function getImport(j: JSCodeShift, root: string | Collection, name: string): Path {
+	return (typeof root === 'string' ? j(root) : root)
+		.find(j.ImportDeclaration)
+		.filter((path: any) => path.node.source.value === name)
+		.paths()[0];
+}
+
+export function getImportedLocals(path: Path): { name: string; isDefault: boolean }[] {
+	return path.value.specifiers.map((specifier: any) => ({
+		name: specifier.local.name,
+		isDefault: specifier.type === 'importDefaultSpecifier'
+	}));
+}
+
+export function getArgument(j: JSCodeShift, root: string | Collection, path: Path, argNum: number = 0): Expression {
+	const arg = path.value.arguments[argNum];
+
+	if (arg && arg.name) {
+		// the argument is a named identifier, so go find the declarator value
+		return getDeclaratorValue(j, root, arg.name);
+	}
+
+	return arg;
+}
+
+export function getDeclaratorValue(j: JSCodeShift, root: string | Collection, name: string): Expression {
+	return (typeof root === 'string' ? j(root) : root)
+		.find(j.VariableDeclarator, {
+			id: { name }
+		})
+		.paths()[0].value.init;
+}
+
 export default function(file: any, api: any) {
 	const j = api.jscodeshift;
 	const root = j(file.source);
 
-	function findImport(name: string, source: any = root) {
-		return source
-			.find(j.ImportDeclaration)
-			.filter((path: any) => path.node.source.value === name)
-			.paths()[0];
-	}
-
-	function getImportedLocals(path: any) {
-		return path.value.specifiers.map((specifier: any) => ({
-			name: specifier.local.name,
-			isDefault: specifier.type === 'ImportDefaultSpecifier'
-		}));
-	}
-
-	function getArgument(path: any, argNum = 0) {
-		const arg = path.value.arguments[argNum];
-		if (arg && arg.name) {
-			return root.find(j.VariableDeclarator, { id: { name: arg.name } }).paths()[0].value.init;
-		}
-
-		return arg;
-	}
-
 	// log the path if the location is importing the ProjectorMixin
-	if (!!findImport('@dojo/framework/widget-core/mixins/Projector')) {
+	if (!!getImport(j, root, '@dojo/framework/widget-core/mixins/Projector')) {
 		projectorLog(file.path);
 	}
 
 	// log the path if the loction is importing outlets
-	if (!!findImport('@dojo/framework/routing/Outlet')) {
+	if (!!getImport(j, root, '@dojo/framework/routing/Outlet')) {
 		outletLog(file.path);
 	}
 
-	const routerPath = findImport('@dojo/framework/routing/Router');
+	const routerPath = getImport(j, root, '@dojo/framework/routing/Router');
+
 	if (!!routerPath) {
 		const { name: routerName } = getImportedLocals(routerPath).reduce(
-			(name: string, path: any) => (path.isDefault ? path.name : 'Router')
+			(value: { name: string; isDefault: boolean; }, path: Path) => (path.isDefault ? path : value)
 		);
 		root.find(j.NewExpression, { callee: { name: routerName } }).forEach((init: any) => {
-			const arg = getArgument(init, 0);
+			const arg = getArgument(j, root, init, 0);
 			if (
 				arg.elements.some(({ properties }: any) =>
 					properties.some(({ key: { name } }: any) => name === 'onEnter' || name === 'onExit')
