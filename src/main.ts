@@ -90,18 +90,18 @@ export class UpgradeCommand implements Command {
 			for (const transform of transforms) {
 				let transformPath: string;
 				let loggingOnly = false;
-				let description: string;
+				let name: string;
 
 				if (typeof transform === 'string') {
 					transformPath = transform;
-					description = transform;
+					name = transform;
 				} else {
 					transformPath = transform.path;
 					loggingOnly = !!transform.loggingOnly;
-					description = transform.description || transformPath;
+					name = transform.name || transformPath;
 				}
 
-				console.log(`${chalk.cyan(`\n${logSymbols.info} Running transform:`)} ${description}\n`);
+				console.log(`${chalk.cyan(`\n${logSymbols.info} Running transform:`)} ${name}\n`);
 
 				const results = await runCodemod(transformPath, paths, {
 					parser,

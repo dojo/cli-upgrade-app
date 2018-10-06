@@ -3,7 +3,12 @@ import { VersionConfig } from '../interfaces';
 
 export const config: VersionConfig = {
 	version: 3,
-	transforms: [resolve(__dirname, 'transforms', 'module-transform-to-framework.js')],
+	transforms: [
+		{
+			name: 'Convert to framework paths',
+			path: resolve(__dirname, 'transforms', 'module-transform-to-framework.js')
+		}
+	],
 	dependencies: {
 		add: ['@dojo/framework'],
 		remove: [

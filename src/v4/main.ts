@@ -4,8 +4,15 @@ import { VersionConfig } from '../interfaces';
 export const config: VersionConfig = {
 	version: 4,
 	transforms: [
-		resolve(__dirname, 'transforms', 'replace-legacy-core.js'),
-		{ path: resolve(__dirname, 'transforms', 'migration-logging.js'), loggingOnly: true }
+		{
+			name: 'Move deleted core dependencies into codebase',
+			path: resolve(__dirname, 'transforms', 'replace-legacy-core.js')
+		},
+		{
+			name: 'Log about v4 changes',
+			path: resolve(__dirname, 'transforms', 'migration-logging.js'),
+			loggingOnly: true
+		}
 	],
 
 	dependencies: {
