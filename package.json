@@ -45,7 +45,7 @@
     "@dojo/cli": "~3.0.0",
     "@dojo/scripts": "~3.0.1",
     "@types/inquirer": "0.0.35",
-	"@types/log-symbols": "2.0.0",
+    "@types/log-symbols": "2.0.0",
     "@types/mockery": "1.4.29",
     "@types/node": "9.6.23",
     "@types/rimraf": "2.0.2",
