@@ -18,7 +18,7 @@ const deps: DependencyMap = {};
 // Copy core src
 rimraf.sync(`${v4Path}/core`);
 rimraf.sync('temp');
-execSync('git clone https://github.com/dojo/framework.git temp --branch v3.0.1 --single-branch --depth 1');
+execSync('git clone https://github.com/dojo/framework.git temp --branch v3 --single-branch --depth 1');
 fs.renameSync('temp/src/core', `${v4Path}/core`);
 rimraf.sync('temp');
 
