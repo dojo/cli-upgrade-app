@@ -4,6 +4,7 @@ import { prompt } from 'inquirer';
 import DependencyManager from './DependencyManager';
 import { runTask } from './util';
 import { VersionConfig } from './interfaces';
+import * as logSymbols from 'log-symbols';
 
 const { run: runCodemod } = require('jscodeshift/src/Runner');
 const glob = require('glob');
@@ -79,28 +80,57 @@ export class UpgradeCommand implements Command {
 	};
 
 	async runUpgrade(
-		{ version, transforms = [], dependencies: { add = [], remove = [] } = {}, run }: VersionConfig,
+		{ version, transforms = [], dependencies: { add = [], remove = [] } = {}, run, postTransform }: VersionConfig,
 		parser: string,
 		paths: string[],
 		dry: boolean
 	) {
-		console.log('\n' + chalk.bold.cyan(`Running version ${version} upgrade scripts.`));
+		console.log('\n' + chalk.bold.cyan(`Running version ${version} upgrade scripts.`) + '\n');
 		try {
 			for (const transform of transforms) {
-				await runCodemod(transform, paths, {
+				let transformPath: string;
+				let loggingOnly = false;
+				let name: string;
+
+				if (typeof transform === 'string') {
+					transformPath = transform;
+					name = transform;
+				} else {
+					transformPath = transform.path;
+					loggingOnly = !!transform.loggingOnly;
+					name = transform.name || transformPath;
+				}
+
+				console.log(`${chalk.cyan(`\n${logSymbols.info} Running transform:`)} ${name}\n`);
+
+				const results = await runCodemod(transformPath, paths, {
 					parser,
 					verbose: 0,
 					babel: false,
-					dry,
+					dry: loggingOnly || dry,
 					extensions: 'js',
 					runInBand: false,
-					silent: false
+					silent: true
 				});
+
+				console.log('\n' + chalk.bold.green(logSymbols.success + '  transform complete.'));
+				console.log(
+					[
+						chalk.red(`${results.error} Errors`),
+						chalk.green(`${results.ok} OK`),
+						chalk.dim(`${results.skip} Skipped`),
+						chalk.blueBright(`${results.nochange} Unchanged`)
+					].join(' ') + '\n'
+				);
+			}
+
+			if (postTransform) {
+				postTransform();
 			}
 
 			if (remove.length) {
 				await runTask(
-					`Removing the following packages: ${remove.join(',')}`,
+					`Removing the following packages: ${remove.join(', ')}`,
 					() => this.depManager.uninstall(remove),
 					dry
 				);
@@ -108,7 +138,7 @@ export class UpgradeCommand implements Command {
 
 			if (add.length) {
 				await runTask(
-					`Installing the following packages: ${add.join(',')}`,
+					`Installing the following packages: ${add.join(', ')}`,
 					() => this.depManager.install(add),
 					dry
 				);
@@ -127,7 +157,7 @@ export class UpgradeCommand implements Command {
 				);
 			}
 		} catch (error) {
-			throw Error('Failed to upgrade');
+			throw Error('Failed to upgrade.');
 		}
 	}
 }

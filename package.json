@@ -33,9 +33,10 @@
   "homepage": "https://github.com/dojo/cli-upgrade-app#readme",
   "dependencies": {
     "chalk": "2.4.1",
-    "fs-extra": "^7.0.0",
+    "fs-extra": "7.0.0",
     "inquirer": "4.0.2",
     "jscodeshift": "matt-gadd/jscodeshift#ef5a272",
+    "log-symbols": "2.2.0",
     "ora": "3.0.0",
     "semver": "5.5.1",
     "tslib": "1.8.1"
@@ -44,9 +45,10 @@
     "@dojo/cli": "~3.0.0",
     "@dojo/scripts": "~3.0.1",
     "@types/inquirer": "0.0.35",
+	"@types/log-symbols": "2.0.0",
     "@types/mockery": "1.4.29",
     "@types/node": "9.6.23",
-    "@types/rimraf": "^2.0.2",
+    "@types/rimraf": "2.0.2",
     "@types/semver": "5.5.0",
     "@types/sinon": "4.3.3",
     "codecov": "3.0.4",
