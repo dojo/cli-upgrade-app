@@ -22,6 +22,7 @@ const packageString = `
 	"@dojo/test-extras": "^3.0.0"
   },
   "devDependencies": {
+	"@dojo/cli-upgrade-app": "latest",
 	"@dojo/cli-build-app": "^2.0.0",
 	"some-other-package": "0.0.1"
   }
