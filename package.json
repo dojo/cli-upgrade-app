@@ -1,6 +1,6 @@
 {
   "name": "@dojo/cli-upgrade-app",
-  "version": "4.0.2-pre",
+  "version": "4.0.2",
   "description": "Upgrade a Dojo application to a newer Dojo version",
   "main": "main",
   "scripts": {
