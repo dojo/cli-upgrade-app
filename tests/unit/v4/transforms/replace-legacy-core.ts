@@ -4,7 +4,7 @@ const { assert } = intern.getPlugin('chai');
 import * as rimraf from 'rimraf';
 import * as os from 'os';
 
-let jscodeshift = require('jscodeshift');
+let jscodeshift = require('jscodeshift-ts');
 import moduleTransform = require('../../../../src/v4/transforms/replace-legacy-core');
 
 jscodeshift = jscodeshift.withParser('typescript');
