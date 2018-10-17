@@ -54,6 +54,12 @@ export default function(file: any, api: any) {
 		log(`${file.path}: Use of ProjectorMixin is deprecated.`);
 	}
 
+	const hasPath = '@dojo/framework/core/has';
+	// log the path if the location is importing the ProjectorMixin
+	if (!!getImport(j, root, hasPath)) {
+		log(`${file.path}: '${hasPath}' module has been moved to '@dojo/framework/has/preset'`, 'error');
+	}
+
 	// log the path if the loction is importing outlets
 	const outletPath = getImport(j, root, '@dojo/framework/routing/Outlet');
 	if (!!outletPath) {

@@ -138,6 +138,12 @@ describe('v4/module-logging', () => {
 			assert.isTrue(loggerStub.calledOnce, 'the logger shold have been called');
 		});
 
+		it('should log the file because it is using @dojo/framework/core/has', () => {
+			const source = `import has from '@dojo/framework/core/has';`;
+			transform({ source, path: 'test.ts' }, { jscodeshift: j, stats: () => {} });
+			assert.isTrue(loggerStub.calledOnce, 'the logger shold have been called');
+		});
+
 		it('should log the file because it is using the Outlet', () => {
 			const source = `
 			import Outlet from '@dojo/framework/routing/Outlet';
