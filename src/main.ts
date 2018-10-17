@@ -6,7 +6,7 @@ import { runTask } from './util';
 import { VersionConfig } from './interfaces';
 import * as logSymbols from 'log-symbols';
 
-const { run: runCodemod } = require('jscodeshift/src/Runner');
+const { run: runCodemod } = require('jscodeshift-ts/src/Runner');
 const glob = require('glob');
 
 export const LATEST_VERSION = 4;

@@ -35,7 +35,7 @@ export = function(file: any, api: any, options: { dry?: boolean }) {
 					}
 				}
 
-				source.value = `${pathToSrc}/${matches[1]}`;
+				source.value = `${pathToSrc}/dojo/${matches[1]}`;
 				return { ...p.node, source: { ...source } };
 			}
 			return p.node;

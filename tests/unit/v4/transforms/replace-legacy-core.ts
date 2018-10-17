@@ -4,7 +4,7 @@ const { assert } = intern.getPlugin('chai');
 import * as rimraf from 'rimraf';
 import * as os from 'os';
 
-let jscodeshift = require('jscodeshift');
+let jscodeshift = require('jscodeshift-ts');
 import moduleTransform = require('../../../../src/v4/transforms/replace-legacy-core');
 
 jscodeshift = jscodeshift.withParser('typescript');
@@ -32,13 +32,13 @@ export { Observable } from '@dojo/framework/core/Observable';
 		assert.equal(
 			output,
 			`
-import request from './core/request';
+import request from './dojo/core/request';
 import { EventObject } from '@dojo/framework/core/Evented';
 
 const cjsMod = require('@dojo/framework/core/compare');
 const dynamicImport = import('@dojo/framework/core/DateObject');
 
-export { Observable } from './core/Observable';
+export { Observable } from './dojo/core/Observable';
 `
 				.split(/\r?\n/g)
 				.join(os.EOL)
@@ -59,10 +59,10 @@ export { Observable } from '@dojo/framework/core/Observable';
 		assert.equal(
 			output,
 			`
-import request from '../core/request';
+import request from '../dojo/core/request';
 import { EventObject } from '@dojo/framework/core/Evented';
 
-export { Observable } from '../core/Observable';
+export { Observable } from '../dojo/core/Observable';
 `
 				.split(/\r?\n/g)
 				.join(os.EOL)
@@ -83,10 +83,10 @@ export { Observable } from '@dojo/framework/core/Observable';
 		assert.equal(
 			output,
 			`
-import request from '../../core/request';
+import request from '../../dojo/core/request';
 import { EventObject } from '@dojo/framework/core/Evented';
 
-export { Observable } from '../../core/Observable';
+export { Observable } from '../../dojo/core/Observable';
 `
 				.split(/\r?\n/g)
 				.join(os.EOL)
@@ -107,10 +107,10 @@ export { Observable } from '@dojo/framework/core/Observable';
 		assert.equal(
 			output,
 			`
-import request from '../../src/core/request';
+import request from '../../src/dojo/core/request';
 import { EventObject } from '@dojo/framework/core/Evented';
 
-export { Observable } from '../../src/core/Observable';
+export { Observable } from '../../src/dojo/core/Observable';
 `
 				.split(/\r?\n/g)
 				.join(os.EOL)

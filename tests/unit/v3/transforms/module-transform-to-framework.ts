@@ -3,7 +3,7 @@ const { assert } = intern.getPlugin('chai');
 
 import * as os from 'os';
 
-let jscodeshift = require('jscodeshift');
+let jscodeshift = require('jscodeshift-ts');
 import moduleTransform = require('../../../../src/v3/transforms/module-transform-to-framework');
 
 jscodeshift = jscodeshift.withParser('typescript');

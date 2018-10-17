@@ -1,6 +1,6 @@
 const dependencyTree = require('dependency-tree');
 const glob = require('glob');
-const Runner = require('jscodeshift/src/Runner');
+const Runner = require('jscodeshift-ts/src/Runner');
 const path = require('path');
 const fs = require('fs-extra');
 const { execSync } = require('child_process');
