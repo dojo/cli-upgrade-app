@@ -2,7 +2,7 @@ const dependencies = require('../core/dependencies.json');
 import matchImportsExports from '../matchImportsExports';
 const fs = require('fs-extra');
 const match = /^@dojo\/framework\/(core\/.*)/;
-const excludes = ['core/Destroyable', 'core/Evented', 'core/QueuingEvented'];
+const excludes = ['core/Destroyable', 'core/Evented', 'core/QueuingEvented', 'core/has'];
 
 export = function(file: any, api: any, options: { dry?: boolean }) {
 	let quote: string | undefined;
@@ -17,7 +17,10 @@ export = function(file: any, api: any, options: { dry?: boolean }) {
 				const filesToCopy = [filePath, ...dependencies[filePath]];
 				filesToCopy.forEach((copyPath) => {
 					if (!options.dry) {
-						fs.copySync(`${__dirname}/../${copyPath}`, `${process.cwd()}/src/dojo/${copyPath}`);
+						const fileExists = fs.pathExistsSync(`${process.cwd()}/src/dojo/${copyPath}`);
+						if (!fileExists) {
+							fs.copySync(`${__dirname}/../${copyPath}`, `${process.cwd()}/src/dojo/${copyPath}`);
+						}
 					}
 				});
 				if (!quote) {
