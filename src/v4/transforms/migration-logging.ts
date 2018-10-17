@@ -55,7 +55,7 @@ export default function(file: any, api: any) {
 	}
 
 	const hasPath = '@dojo/framework/core/has';
-	// log the path if the location is importing the ProjectorMixin
+	// log the path if the location is importing core/has
 	if (!!getImport(j, root, hasPath)) {
 		log(`${file.path}: '${hasPath}' module has been moved to '@dojo/framework/has/preset'`, 'error');
 	}
