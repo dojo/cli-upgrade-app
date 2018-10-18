@@ -45,6 +45,24 @@ export { Observable } from './dojo/core/Observable';
 		);
 	});
 
+	it('should transform legacy package interface imports to local copies', () => {
+		const input = {
+			path: 'src/index.ts',
+			source: `
+import { Response } from '@dojo/framework/core/request/interfaces';
+`
+		};
+		const output = moduleTransform(input, { jscodeshift, stats: () => {} }, { dry: false });
+		assert.equal(
+			output,
+			`
+import { Response } from './dojo/core/request/interfaces';
+`
+				.split(/\r?\n/g)
+				.join(os.EOL)
+		);
+	});
+
 	it('should transform paths relative to src/core', () => {
 		const input = {
 			path: 'src/subdir/index.ts',
