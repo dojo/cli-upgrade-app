@@ -13,8 +13,13 @@ export = function(file: any, api: any, options: { dry?: boolean }) {
 			const { source } = p.node;
 			const matches = match.exec(source.value);
 			if (matches && excludes.indexOf(matches[1]) === -1) {
-				const filePath = `${matches[1]}.ts`;
-				const filesToCopy = [filePath, ...dependencies[filePath]];
+				const moduleImport = matches[1];
+				let filesToCopy: string[] = [];
+				if (dependencies[`${moduleImport}.ts`]) {
+					filesToCopy = [`${moduleImport}.ts`, ...dependencies[`${moduleImport}.ts`]];
+				} else if (dependencies[`${moduleImport}.d.ts`]) {
+					filesToCopy = [`${moduleImport}.d.ts`, ...dependencies[`${moduleImport}.d.ts`]];
+				}
 				filesToCopy.forEach((copyPath) => {
 					if (!options.dry) {
 						const fileExists = fs.pathExistsSync(`${process.cwd()}/src/dojo/${copyPath}`);
