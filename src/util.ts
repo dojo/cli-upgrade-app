@@ -45,3 +45,11 @@ export async function runTask<T>(
 
 	return await promise;
 }
+
+export function getLineEndings(source: string): '\r' | '\n' | '\r\n' | undefined {
+	const cr = '\r';
+	const lf = '\n';
+	const crlf = '\r\n';
+
+	return source.includes(crlf) ? crlf : source.includes(cr) ? cr : source.includes(lf) ? lf : undefined;
+}
