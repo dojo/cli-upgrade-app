@@ -6,7 +6,7 @@
   "scripts": {
     "build:cjs": "tsc",
     "build": "npm-run-all -p build:** -s generate:core dojo-package",
-    "clean": "rimraf dist coverage src/core",
+    "clean": "rimraf dist coverage src/dojo/core",
     "generate:core": "ts-node ./src/v4/scripts/process-legacy-core.ts",
     "dojo-package": "dojo-package",
     "dojo-release": "dojo-release",
