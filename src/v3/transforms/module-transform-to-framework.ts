@@ -1,7 +1,10 @@
+import { getLineEndings } from '../../util';
+
 const match = /^@dojo\/(core|has|i18n|widget-core|routing|stores|shim|test-extras)/;
 
 export = function(file: any, api: any) {
 	let quote: string | undefined;
+	const lineTerminator = getLineEndings(file.source);
 	const j = api.jscodeshift;
 	return j(file.source)
 		.find(j.ImportDeclaration)
@@ -19,5 +22,5 @@ export = function(file: any, api: any) {
 			}
 			return p.node;
 		})
-		.toSource({ quote: quote || 'single' });
+		.toSource({ quote: quote || 'single', lineTerminator });
 };

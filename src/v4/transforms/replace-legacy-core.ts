@@ -1,11 +1,13 @@
 const dependencies = require('../core/dependencies.json');
 import matchImportsExports from '../matchImportsExports';
+import { getLineEndings } from '../../util';
 const fs = require('fs-extra');
 const match = /^@dojo\/framework\/(core\/.*)/;
 const excludes = ['core/Destroyable', 'core/Evented', 'core/QueuingEvented', 'core/has'];
 
 export = function(file: any, api: any, options: { dry?: boolean }) {
 	let quote: string | undefined;
+	let lineTerminator = getLineEndings(file.source);
 	const j = api.jscodeshift;
 	return j(file.source)
 		.find(j.Declaration, matchImportsExports)
@@ -48,5 +50,5 @@ export = function(file: any, api: any, options: { dry?: boolean }) {
 			}
 			return p.node;
 		})
-		.toSource({ quote: quote || 'single' });
+		.toSource({ quote: quote || 'single', lineTerminator });
 };

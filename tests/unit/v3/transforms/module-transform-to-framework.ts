@@ -1,7 +1,8 @@
 const { describe, it } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
 
-import * as os from 'os';
+import { EOL } from 'os';
+const normalizeLineEndings = (str: string) => str.replace(/\r?\n/g, EOL);
 
 let jscodeshift = require('jscodeshift-ts');
 import moduleTransform = require('../../../../src/v3/transforms/module-transform-to-framework');
@@ -9,7 +10,7 @@ import moduleTransform = require('../../../../src/v3/transforms/module-transform
 jscodeshift = jscodeshift.withParser('typescript');
 
 const input = {
-	source: `
+	source: normalizeLineEndings(`
 import { ProjectorMixin } from '@dojo/widget-core/mixins/Projector';
 import { registerRouterInjector } from '@dojo/routing/RouterInjector';
 import harness from '@dojo/test-extras/harness';
@@ -31,7 +32,7 @@ const Projector = ProjectorMixin(TodoApp);
 const projector = new Projector();
 projector.setProperties({ registry });
 projector.append();
-`
+`)
 };
 
 describe('module-transform-to-framework', () => {
@@ -39,7 +40,7 @@ describe('module-transform-to-framework', () => {
 		const output = moduleTransform(input, { jscodeshift, stats: () => {} });
 		assert.equal(
 			output,
-			`
+			normalizeLineEndings(`
 import { ProjectorMixin } from '@dojo/framework/widget-core/mixins/Projector';
 import { registerRouterInjector } from '@dojo/framework/routing/RouterInjector';
 import harness from '@dojo/framework/testing/harness';
@@ -61,9 +62,7 @@ const Projector = ProjectorMixin(TodoApp);
 const projector = new Projector();
 projector.setProperties({ registry });
 projector.append();
-`
-				.split(/\r?\n/g)
-				.join(os.EOL)
+`)
 		);
 	});
 });

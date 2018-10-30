@@ -100,4 +100,27 @@ describe('util', () => {
 			assert.isFalse(stub.called);
 		});
 	});
+
+	describe('getLineEndings', () => {
+		it('correctly finds CRLF line endings', () => {
+			const source = 'hello\r\nworld\r\ntest';
+			const result = util.getLineEndings(source);
+			assert.strictEqual(result, '\r\n');
+		});
+		it('correctly finds CR line endings', () => {
+			const source = 'hello\rworld\rtest';
+			const result = util.getLineEndings(source);
+			assert.strictEqual(result, '\r');
+		});
+		it('correctly finds LF line endings', () => {
+			const source = 'hello\nworld\ntest';
+			const result = util.getLineEndings(source);
+			assert.strictEqual(result, '\n');
+		});
+		it('returns undefined if line endings are not found', () => {
+			const source = 'hello world test';
+			const result = util.getLineEndings(source);
+			assert.isUndefined(result);
+		});
+	});
 });
