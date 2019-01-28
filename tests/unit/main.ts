@@ -1,4 +1,4 @@
-import { UpgradeCommand } from '../../src/main';
+import { UpgradeCommand, LATEST_VERSION } from '../../src/main';
 import DependencyManager from '../../src/DependencyManager';
 import MockModule from '../support/MockModule';
 import * as sinon from 'sinon';
@@ -65,7 +65,7 @@ describe('main', () => {
 	it('runs a version-specific config', async () => {
 		sandbox.stub(command, 'getConfigs').resolves([
 			{
-				version: 4,
+				version: LATEST_VERSION,
 				transforms: ['test/transform.js'],
 				dependencies: {
 					add: ['@dojo/frameowrk'],
@@ -84,7 +84,7 @@ describe('main', () => {
 	it("won't call install or uninstall if there is nothing to do", async () => {
 		sandbox.stub(command, 'getConfigs').resolves([
 			{
-				version: 4,
+				version: LATEST_VERSION,
 				transforms: ['test/transform.js'],
 				dependencies: {
 					add: [],
