@@ -6,3 +6,4 @@ import './v4/transforms/replace-legacy-core';
 import './v4/scripts/transform-legacy-core';
 import './v4/transforms/migration-logging';
 import './v5/transforms/consolidate-has';
+import './v6/transforms/use-globalize';

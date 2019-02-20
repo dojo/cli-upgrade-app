@@ -25,7 +25,7 @@ dojo upgrade
 
 ## Contributing
 
-We appreciate your interest!  Please see the [Dojo 2 Meta Repository](https://github.com/dojo/meta#readme) for the
+We appreciate your interest!  Please see the [Dojo Meta Repository](https://github.com/dojo/meta#readme) for the
 Contributing Guidelines.
 
 Version upgrades are defined in directories starting with "v" and the major version number, (e.g. `v3`). Each version's configuration should be exported as `config` from a `main.ts` file in the directory.
@@ -45,4 +45,4 @@ npm test
 
 ## Licensing Information
 
-© 2018 [JS Foundation](https://js.foundation/). [New BSD](http://opensource.org/licenses/BSD-3-Clause) license.
+© 2019 [JS Foundation](https://js.foundation/). [New BSD](http://opensource.org/licenses/BSD-3-Clause) license.
