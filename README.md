@@ -44,4 +44,4 @@ npm test
 
 ## Licensing Information
 
-© 2018 [JS Foundation](https://js.foundation/). [New BSD](http://opensource.org/licenses/BSD-3-Clause) license.
+© 2019 [OpenJS Foundation](https://openjsf.org). [New BSD](http://opensource.org/licenses/BSD-3-Clause) license.
