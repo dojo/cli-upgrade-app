@@ -60,9 +60,9 @@ export class UpgradeCommand implements Command {
 		}
 
 		if (!dry) {
-			const answer = await prompt({
+			const { answer } = await prompt({
 				type: 'confirm',
-				name: 'run',
+				name: 'answer',
 				message:
 					'This command will irreversibly modify files. Are you sure you want to run the upgrade? Use the --dry option first if in doubt',
 				default: false
