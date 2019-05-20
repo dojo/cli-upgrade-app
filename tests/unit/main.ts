@@ -51,13 +51,13 @@ describe('main', () => {
 	});
 
 	it('should run with dry option', async () => {
-		promptStub.resolves(true);
+		promptStub.resolves({ answer: true });
 		await command.run({} as any, { pattern: '*.noop', dry: true });
 		assert.include(codemodStub.getCall(0).args[2], { dry: true });
 	});
 
 	it('should run with pattern option', async () => {
-		promptStub.resolves(true);
+		promptStub.resolves({ answer: true });
 		await command.run({} as any, { pattern: 'src/main.ts', dry: true });
 		assert.deepEqual(codemodStub.getCall(0).args[1], ['src/main.ts']);
 	});
@@ -74,7 +74,7 @@ describe('main', () => {
 			}
 		]);
 
-		promptStub.resolves(true);
+		promptStub.resolves({ answer: true });
 
 		await command.run({} as any, { pattern: 'src/main.ts', dry: false });
 		assert.strictEqual(codemodStub.getCall(0).args[0], 'test/transform.js', 'failed to send args to transform');
@@ -93,7 +93,7 @@ describe('main', () => {
 			}
 		]);
 
-		promptStub.resolves(true);
+		promptStub.resolves({ answer: true });
 
 		await command.run({} as any, { pattern: 'src/main.ts', dry: false });
 		assert.strictEqual(codemodStub.getCall(0).args[0], 'test/transform.js', 'failed to send args to transform');
@@ -112,7 +112,7 @@ describe('main', () => {
 			}
 		]);
 
-		promptStub.resolves(true);
+		promptStub.resolves({ answer: true });
 
 		await command.run({} as any, { pattern: 'src/main.ts', dry: false });
 		assert.strictEqual(codemodStub.getCall(0).args[0], 'test/transform.js', 'failed to send args to transform');
@@ -131,7 +131,7 @@ describe('main', () => {
 			}
 		]);
 
-		promptStub.resolves(true);
+		promptStub.resolves({ answer: true });
 
 		await command.run({} as any, { pattern: 'src/main.ts', dry: false });
 		const config = codemodStub.getCall(0).args[2];
@@ -139,7 +139,7 @@ describe('main', () => {
 	});
 
 	it('should not run when user cancels prompt', async () => {
-		promptStub.resolves(false);
+		promptStub.resolves({ answer: false });
 		let message = '';
 		try {
 			await command.run({} as any, { pattern: 'src/main.ts', dry: false });
@@ -160,7 +160,7 @@ describe('main', () => {
 			}
 		]);
 
-		promptStub.resolves(true);
+		promptStub.resolves({ answer: true });
 		await command.run({} as any, { pattern: 'src/main.ts', dry: false });
 		assert.isTrue(runStub.called);
 	});
@@ -174,7 +174,7 @@ describe('main', () => {
 			}
 		]);
 
-		promptStub.resolves(true);
+		promptStub.resolves({ answer: true });
 		await command.run({} as any, { pattern: 'src/main.ts', dry: false });
 		assert.isTrue(runStub.called);
 	});
