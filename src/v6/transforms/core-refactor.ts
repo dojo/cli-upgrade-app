@@ -14,14 +14,15 @@ export default function(file: any, api: any) {
 				quote = source.extra.raw.substr(0, 1) === '"' ? 'double' : 'single';
 			}
 
-			if (source.value === '@dojo/framework/widget-core/d') {
-				console.log('P', p);
-				debugger; // tslint:disable-line 
-			} else if (
+			if (
 				source.value === '@dojo/framework/widget-core/d' ||
 				source.value === '@dojo/framework/widget-core/tsx'
 			) {
 				source.value = '@dojo/framework/core/vdom';
+			}
+
+			if (source.value === '@dojo/framework/has/has') {
+				source.value = '@dojo/framework/core/has';
 			}
 
 			source.value = source.value.replace('widget-core', 'core');

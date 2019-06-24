@@ -13,6 +13,7 @@ const input = {
 	source: normalizeLineEndings(`
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 import { tsx } from '@dojo/framework/widget-core/tsx';
+import has from '@dojo/framework/has/has';
 `)
 };
 
@@ -24,6 +25,8 @@ describe('refactor-core', () => {
 			normalizeLineEndings(`
 import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 import { tsx } from '@dojo/framework/core/vdom';
-`));
+import has from '@dojo/framework/core/has';
+`)
+		);
 	});
 });
