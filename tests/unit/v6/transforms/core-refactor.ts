@@ -14,6 +14,7 @@ const input = {
 import { WidgetBase } from '@dojo/framework/widget-core/WidgetBase';
 import { tsx } from '@dojo/framework/widget-core/tsx';
 import has from '@dojo/framework/has/has';
+import { v, decorate as testDecorate } from '@dojo/framework/widget-core/d';
 `)
 };
 
@@ -26,6 +27,8 @@ describe('refactor-core', () => {
 import { WidgetBase } from '@dojo/framework/core/WidgetBase';
 import { tsx } from '@dojo/framework/core/vdom';
 import has from '@dojo/framework/core/has';
+import { decorate as testDecorate } from '@dojo/framework/core/util';
+import { v } from '@dojo/framework/core/vdom';
 `)
 		);
 	});

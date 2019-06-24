@@ -8,16 +8,47 @@ export default function(file: any, api: any) {
 	return j(file.source)
 		.find(j.ImportDeclaration)
 		.replaceWith((p: any) => {
-			const { source } = p.node;
+			const { source, specifiers } = p.node;
 
 			if (!quote) {
 				quote = source.extra.raw.substr(0, 1) === '"' ? 'double' : 'single';
 			}
 
-			if (
-				source.value === '@dojo/framework/widget-core/d' ||
-				source.value === '@dojo/framework/widget-core/tsx'
-			) {
+			if (source.value === '@dojo/framework/widget-core/d' && specifiers.length) {
+				const decorateImports: any[] = [];
+				const otherImports: any[] = [];
+
+				specifiers.forEach((specifier: any) => {
+					if (specifier.imported.name === 'decorate') {
+						decorateImports.push(specifier);
+					} else {
+						otherImports.push(specifier);
+					}
+				});
+
+				if (decorateImports.length) {
+					return [
+						{
+							...p.node,
+							specifiers: decorateImports,
+							source: {
+								...source,
+								value: '@dojo/framework/core/util'
+							}
+						},
+						{
+							...p.node,
+							specifiers: otherImports,
+							source: {
+								...source,
+								value: '@dojo/framework/core/vdom'
+							}
+						}
+					];
+				} else {
+					source.value = '@dojo/framework/core/vdom';
+				}
+			} else if (source.value === '@dojo/framework/widget-core/tsx') {
 				source.value = '@dojo/framework/core/vdom';
 			}
 
