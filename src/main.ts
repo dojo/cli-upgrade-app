@@ -9,7 +9,7 @@ import * as logSymbols from 'log-symbols';
 const { run: runCodemod } = require('jscodeshift-ts/src/Runner');
 const glob = require('glob');
 
-export const LATEST_VERSION = 5;
+export const LATEST_VERSION = 6;
 
 export class UpgradeCommand implements Command {
 	private depManager: DependencyManager;
