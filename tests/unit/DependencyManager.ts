@@ -57,8 +57,8 @@ describe('DependencyManager', () => {
 	describe('instantiation', () => {
 		it('defaults to a relative package.json', () => {
 			depManager = new MockDependencyManager();
+			assert.isTrue(readFileStub.called);
 			assert.strictEqual(depManager.path, resolve(process.cwd(), 'package.json'));
-			assert.isTrue(readFileStub.calledOnce);
 		});
 
 		it('provides for a custom path to be provided', () => {
