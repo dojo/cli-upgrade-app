@@ -1,4 +1,7 @@
 # @dojo/cli-upgrade
+
+[![Build Status](https://travis-ci.org/dojo/cli-upgrade-app.svg?branch=master)](https://travis-ci.org/dojo/cli-upgrade-app)
+
 The official CLI command for upgrading Dojo applications.
 
 ## Usage
