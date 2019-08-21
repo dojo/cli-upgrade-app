@@ -42,6 +42,11 @@ To test, run the npm test command.
 npm test
 ```
 
+### E2E Tests
+
+* npm run build
+*
+
 ## Licensing Information
 
 © 2019 [OpenJS Foundation](https://openjsf.org). [New BSD](http://opensource.org/licenses/BSD-3-Clause) license.

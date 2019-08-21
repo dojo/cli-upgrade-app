@@ -3,7 +3,7 @@ import chalk from 'chalk';
 import { prompt } from 'inquirer';
 import DependencyManager from './DependencyManager';
 import { runTask } from './util';
-import { VersionConfig } from './interfaces';
+import { VersionConfig, Dependencies } from './interfaces';
 import * as logSymbols from 'log-symbols';
 
 const { run: runCodemod } = require('jscodeshift-ts/src/Runner');
@@ -80,7 +80,13 @@ export class UpgradeCommand implements Command {
 	};
 
 	async runUpgrade(
-		{ version, transforms = [], dependencies: { add = [], remove = [] } = {}, run, postTransform }: VersionConfig,
+		{
+			version,
+			transforms = [],
+			dependencies: { add = [], remove = [] } = {} as Dependencies,
+			run,
+			postTransform
+		}: VersionConfig,
 		parser: string,
 		paths: string[],
 		dry: boolean
