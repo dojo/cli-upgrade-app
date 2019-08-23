@@ -29,11 +29,12 @@ interface PackageJson {
 }
 
 export class DependencyManager {
-	private json: PackageJson;
+	private json!: PackageJson;
 	path: string;
 
 	constructor(path: string = resolve(process.cwd(), 'package.json')) {
-		this.setPackagePath(path);
+		this.path = path;
+		this.getPackageData();
 	}
 
 	private getPackageData(): PackageJson {
@@ -45,11 +46,6 @@ export class DependencyManager {
 		}
 
 		return this.json;
-	}
-
-	setPackagePath(path: string): void {
-		this.path = path;
-		this.getPackageData();
 	}
 
 	getPackageVersion(): string {

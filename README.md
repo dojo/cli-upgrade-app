@@ -1,4 +1,7 @@
 # @dojo/cli-upgrade
+
+[![Build Status](https://travis-ci.org/dojo/cli-upgrade-app.svg?branch=master)](https://travis-ci.org/dojo/cli-upgrade-app)
+
 The official CLI command for upgrading Dojo applications.
 
 ## Usage
@@ -41,6 +44,15 @@ To test, run the npm test command.
 ```bash
 npm test
 ```
+
+### Building a local package
+
+Sometimes it is useful to build a local package for testing. `@dojo/cli-upgrade-app` can be built into a local tarball and installed.
+
+* `npm run build`
+* `cd dist/release`
+* `npm pack`
+* update `package.json` with the dependency `{ "@dojo/cli-upgrade-app": "file:[path to tarball]" }`
 
 ## Licensing Information
 

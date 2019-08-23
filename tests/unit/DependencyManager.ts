@@ -57,6 +57,7 @@ describe('DependencyManager', () => {
 	describe('instantiation', () => {
 		it('defaults to a relative package.json', () => {
 			depManager = new MockDependencyManager();
+			assert.isTrue(readFileStub.called);
 			assert.strictEqual(depManager.path, resolve(process.cwd(), 'package.json'));
 		});
 
@@ -69,14 +70,9 @@ describe('DependencyManager', () => {
 		it('throws an error if the path is not valid', () => {
 			readFileStub.throws('');
 			assert.throws(() => {
-				depManager.setPackagePath('fake');
+				new MockDependencyManager('fake');
 			}, 'Unable to load package.json. Aborting upgrade.');
 		});
-	});
-
-	it('reloads the package.json when the path is changed', () => {
-		depManager.setPackagePath('newpath.json');
-		assert.isTrue(readFileStub.calledTwice);
 	});
 
 	it('returns the current package version', () => {
