@@ -6,7 +6,7 @@ import { runTask } from './util';
 import { VersionConfig, Dependencies } from './interfaces';
 import * as logSymbols from 'log-symbols';
 
-const { run: runCodemod } = require('jscodeshift-ts/src/Runner');
+const { run: runCodemod } = require('jscodeshift/src/Runner');
 const glob = require('glob');
 
 export const LATEST_VERSION = 6;
@@ -49,7 +49,7 @@ export class UpgradeCommand implements Command {
 		const { pattern, dry } = args;
 		const paths = glob.sync(pattern);
 		const hasJSX = paths.some((p: string) => p.match(/\.tsx$/g));
-		const parser = hasJSX ? 'typescript-jsx' : 'typescript';
+		const parser = hasJSX ? 'ts-jsx' : 'ts';
 		const fromVersion = this.depManager.getDojoVersion();
 		const toVersion = LATEST_VERSION;
 

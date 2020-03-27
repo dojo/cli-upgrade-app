@@ -1,6 +1,6 @@
 const dependencyTree = require('dependency-tree');
 const glob = require('glob');
-const Runner = require('jscodeshift-ts/src/Runner');
+const Runner = require('jscodeshift/src/Runner');
 const path = require('path');
 const fs = require('fs-extra');
 const { execSync } = require('child_process');
@@ -39,7 +39,7 @@ deps['core/request.ts'].push('core/request/providers/node.ts', ...deps['core/req
 fs.writeFileSync(`${v4Path}/core/dependencies.json`, JSON.stringify(deps, null, '\t'));
 
 const opts = {
-	parser: 'typescript',
+	parser: 'ts',
 	transform: process.cwd() + '/dist/cjs/src/v4/scripts/transform-legacy-core.js',
 	path: paths,
 	verbose: 1,
