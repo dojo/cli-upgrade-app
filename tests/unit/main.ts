@@ -22,10 +22,10 @@ describe('main', () => {
 	beforeEach(() => {
 		sandbox = sinon.sandbox.create();
 		mockModule = new MockModule('../../src/main', require);
-		mockModule.dependencies(['./util', 'jscodeshift-ts/src/Runner', 'inquirer']);
+		mockModule.dependencies(['./util', 'jscodeshift/src/Runner', 'inquirer']);
 		runTaskStub = mockModule.getMock('./util').runTask;
 		codemodStub = mockModule
-			.getMock('jscodeshift-ts/src/Runner')
+			.getMock('jscodeshift/src/Runner')
 			.run.resolves({ error: 0, ok: 0, unchanged: 0, skip: 0 });
 		promptStub = mockModule.getMock('inquirer').prompt;
 		mockDepManager = sinon.createStubInstance(DependencyManager);

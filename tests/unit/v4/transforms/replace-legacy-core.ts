@@ -6,10 +6,10 @@ import { EOL } from 'os';
 
 const normalizeLineEndings = (str: string) => str.replace(/\r?\n/g, EOL);
 
-let jscodeshift = require('jscodeshift-ts');
+let jscodeshift = require('jscodeshift');
 import moduleTransform = require('../../../../src/v4/transforms/replace-legacy-core');
 
-jscodeshift = jscodeshift.withParser('typescript');
+jscodeshift = jscodeshift.withParser('ts');
 
 describe('replace-legacy-core', () => {
 	after(() => {
