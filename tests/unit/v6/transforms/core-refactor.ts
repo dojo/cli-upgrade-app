@@ -4,10 +4,10 @@ import { EOL } from 'os';
 
 const normalizeLineEndings = (str: string) => str.replace(/\r?\n/g, EOL);
 
-let jscodeshift = require('jscodeshift-ts');
+let jscodeshift = require('jscodeshift');
 import moduleTransform from '../../../../src/v6/transforms/core-refactor';
 
-jscodeshift = jscodeshift.withParser('typescript');
+jscodeshift = jscodeshift.withParser('ts');
 
 const input = {
 	source: normalizeLineEndings(`

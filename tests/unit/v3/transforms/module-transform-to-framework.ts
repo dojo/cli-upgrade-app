@@ -4,10 +4,10 @@ const { assert } = intern.getPlugin('chai');
 import { EOL } from 'os';
 const normalizeLineEndings = (str: string) => str.replace(/\r?\n/g, EOL);
 
-let jscodeshift = require('jscodeshift-ts');
+let jscodeshift = require('jscodeshift');
 import moduleTransform = require('../../../../src/v3/transforms/module-transform-to-framework');
 
-jscodeshift = jscodeshift.withParser('typescript');
+jscodeshift = jscodeshift.withParser('ts');
 
 const input = {
 	source: normalizeLineEndings(`

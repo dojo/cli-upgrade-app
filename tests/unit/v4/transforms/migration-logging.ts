@@ -6,7 +6,7 @@ import transform, {
 } from '../../../../src/v4/transforms/migration-logging';
 import * as sinon from 'sinon';
 
-const j = require('jscodeshift-ts').withParser('typescript');
+const j = require('jscodeshift').withParser('ts');
 
 const { describe, it, beforeEach, afterEach } = intern.getInterface('bdd');
 const { assert } = intern.getPlugin('chai');
