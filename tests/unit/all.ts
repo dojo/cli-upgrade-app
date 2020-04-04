@@ -8,3 +8,4 @@ import './v4/transforms/migration-logging';
 import './v5/transforms/consolidate-has';
 import './v6/transforms/core-refactor';
 import './v7/transforms/new-test-harness';
+import './v7/transforms/outlet-to-route';
