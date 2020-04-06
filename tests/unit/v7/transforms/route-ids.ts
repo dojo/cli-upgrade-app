@@ -32,7 +32,6 @@ export default [
 
 describe('route-ids', () => {
 	it('add ID property to routes in ts file', () => {
-		debugger;
 		const output = moduleTransform(input, { jscodeshift, stats: () => {} });
 		assert.equal(
 			output,
@@ -60,7 +59,6 @@ export default [
 	});
 
 	it('add ID property to routes in tsx file', () => {
-		debugger;
 		const output = moduleTransform({ ...input, path: 'routes.tsx' }, { jscodeshift, stats: () => {} });
 		assert.equal(
 			output,

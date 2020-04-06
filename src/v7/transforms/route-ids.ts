@@ -3,12 +3,10 @@ import { getLineEndings } from '../../util';
 export default function(file: any, api: any) {
 	let quote: string | undefined;
 
-	debugger;
 	if (file.path && /^routes\.ts(x)?$/.test(file.path)) {
 		const j = api.jscodeshift;
 		const lineTerminator = getLineEndings(file.source);
 
-		debugger;
 		return j(file.source)
 			.find(j.ObjectExpression)
 			.replaceWith((p: any) => {
@@ -22,7 +20,6 @@ export default function(file: any, api: any) {
 						if (!quote) {
 							quote = p.node.properties[0].value.extra.raw[0] === '"' ? 'double' : 'single';
 						}
-						debugger;
 						return {
 							...p.node,
 							properties: [
