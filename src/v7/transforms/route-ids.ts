@@ -39,7 +39,6 @@ export default function(file: any, api: any) {
 			})
 			.toSource({ quote: quote || 'single', lineTerminator });
 	} else {
-		debugger;
 		const injectorPaths = jFile
 			.find(j.ImportDeclaration)
 			.filter((path: any) => path.node.source.value === '@dojo/framework/routing/RouterInjector')
@@ -57,7 +56,6 @@ export default function(file: any, api: any) {
 			if (
 				!routesImports ||
 				!routesImports.some((routesImport: any) => {
-					debugger;
 					const routesPath = `${path.resolve(file.path, `../${routesImport.node.source.value}`)}.ts`;
 					return routesRegex.test(routesPath);
 				})
