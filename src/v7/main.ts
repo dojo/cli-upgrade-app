@@ -9,6 +9,10 @@ export const config: VersionConfig = {
 			path: resolve(__dirname, 'transforms', 'new-test-harness.js')
 		},
 		{
+			name: 'Add IDs to routes',
+			path: resolve(__dirname, 'transforms', 'route-ids.js')
+		},
+		{
 			name: 'Update Outlet dependencies to Route',
 			path: resolve(__dirname, 'transforms', 'outlet-to-route.js')
 		}
