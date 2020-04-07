@@ -19,7 +19,7 @@ import assertionTemplate from '@dojo/framework/testing/assertionTemplate';
 };
 
 describe('new-test-harness', () => {
-	it('transforms widget-core imports to core', () => {
+	it('transforms testing imports to testing/harness', () => {
 		const output = moduleTransform(input, { jscodeshift, stats: () => {} });
 		assert.equal(
 			output,
