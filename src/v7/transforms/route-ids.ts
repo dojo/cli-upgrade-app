@@ -3,7 +3,7 @@ import { getLineEndings } from '../../util';
 export default function(file: any, api: any) {
 	let quote: string | undefined;
 
-	if (file.path && /^routes\.ts(x)?$/.test(file.path)) {
+	if (file.path && /routes\.ts(x)?$/.test(file.path)) {
 		const j = api.jscodeshift;
 		const lineTerminator = getLineEndings(file.source);
 
