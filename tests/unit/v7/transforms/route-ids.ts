@@ -10,7 +10,7 @@ import moduleTransform from '../../../../src/v7/transforms/route-ids';
 jscodeshift = jscodeshift.withParser('ts');
 
 const input = {
-	path: 'routes.ts',
+	path: 'src/routes.ts',
 	source: normalizeLineEndings(`
 export default [
     {
@@ -59,7 +59,7 @@ export default [
 	});
 
 	it('add ID property to routes in tsx file', () => {
-		const output = moduleTransform({ ...input, path: 'routes.tsx' }, { jscodeshift, stats: () => {} });
+		const output = moduleTransform({ ...input, path: 'src/routes.tsx' }, { jscodeshift, stats: () => {} });
 		assert.equal(
 			output,
 			normalizeLineEndings(`
@@ -83,5 +83,10 @@ export default [
 ];
 `)
 		);
+	});
+
+	it('does not run against other files', () => {
+		const output = moduleTransform({ ...input, path: 'src/mailroutes.tsx' }, { jscodeshift, stats: () => {} });
+		assert.isUndefined(output);
 	});
 });
