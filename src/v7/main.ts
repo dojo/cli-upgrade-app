@@ -7,6 +7,10 @@ export const config: VersionConfig = {
 		{
 			name: 'Refactor framework/testing to framework/testing/harness',
 			path: resolve(__dirname, 'transforms', 'new-test-harness.js')
+		},
+		{
+			name: 'Update Outlet dependencies to Route',
+			path: resolve(__dirname, 'transforms', 'outlet-to-route.js')
 		}
 	],
 	dependencies: {

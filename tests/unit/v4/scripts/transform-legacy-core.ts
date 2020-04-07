@@ -33,13 +33,13 @@ const request: {
     put(url: string, options?: RequestOptions): UploadObservableTask<Response>;
 
     setDefaultProvider(provider: Provider): void;
-} = <any>function request(url: string, options: RequestOptions = {}): Task<Response> {
+} = function request(url: string, options: RequestOptions = {}): Task<Response> {
     try {
         return providerRegistry.match(url, options)(url, options);
     } catch (error) {
         return Task.reject<Response>(error);
     }
-};
+} as any;
 
 ['DELETE', 'GET', 'HEAD', 'OPTIONS'].forEach((method) => {
     Object.defineProperty(request, method.toLowerCase(), {
@@ -56,7 +56,7 @@ const request: {
         value(url: string, options: RequestOptions = {}): UploadObservableTask<Response> {
             options = Object.create(options);
             options.method = method;
-            return <UploadObservableTask<Response>>request(url, options);
+            return request(url, options) as UploadObservableTask<Response>;
         }
     });
 });
@@ -106,13 +106,13 @@ const request: {
     put(url: string, options?: RequestOptions): UploadObservableTask<Response>;
 
     setDefaultProvider(provider: Provider): void;
-} = <any>function request(url: string, options: RequestOptions = {}): Task<Response> {
+} = function request(url: string, options: RequestOptions = {}): Task<Response> {
     try {
         return providerRegistry.match(url, options)(url, options);
     } catch (error) {
         return Task.reject<Response>(error);
     }
-};
+} as any;
 
 ['DELETE', 'GET', 'HEAD', 'OPTIONS'].forEach((method) => {
     Object.defineProperty(request, method.toLowerCase(), {
@@ -129,7 +129,7 @@ const request: {
         value(url: string, options: RequestOptions = {}): UploadObservableTask<Response> {
             options = Object.create(options);
             options.method = method;
-            return <UploadObservableTask<Response>>request(url, options);
+            return request(url, options) as UploadObservableTask<Response>;
         }
     });
 });
