@@ -49,7 +49,7 @@ export class UpgradeCommand implements Command {
 		const { pattern, dry } = args;
 		const paths = glob.sync(pattern);
 		const hasJSX = paths.some((p: string) => p.match(/\.tsx$/g));
-		const parser = hasJSX ? 'ts-jsx' : 'ts';
+		const parser = hasJSX ? 'tsx' : 'ts';
 		const fromVersion = this.depManager.getDojoVersion();
 		const toVersion = LATEST_VERSION;
 
