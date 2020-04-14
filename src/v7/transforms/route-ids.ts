@@ -25,7 +25,6 @@ export default function(file: any, api: any) {
 						false
 					);
 					if (outlet) {
-						debugger;
 						if (!quote) {
 							quote = p.node.properties[0].value.extra.raw[0] === '"' ? 'double' : 'single';
 						}
