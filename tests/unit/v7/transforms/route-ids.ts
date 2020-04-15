@@ -16,12 +16,31 @@ const input = {
 export default [
     {
         path: 'home',
-        outlet: 'home',
+        outlet: a.nested.identifier,
         defaultRoute: true
     },
     {
         path: 'about',
-        outlet: 'about'
+        outlet: anIdentifier,
+        children: [
+            {
+                path: 'child',
+                outlet: 'child',
+                children: [
+                    {
+                        path: 'child-child',
+                        outlet: 'child-child'
+                    }
+                ],
+				defaultParams: {
+					hideMenu: 'true'
+				}
+            },
+            {
+                path: 'child2',
+                outlet: 'child2'
+            }
+        ]
     },
     {
         path: 'profile',
@@ -40,14 +59,41 @@ describe('route-ids', () => {
 export default [
     {
         path: 'home',
-        outlet: 'home',
+        outlet: a.nested.identifier,
         defaultRoute: true,
-        id: 'home'
+        id: a.nested.identifier
     },
     {
         path: 'about',
-        outlet: 'about',
-        id: 'about'
+        outlet: anIdentifier,
+
+        children: [
+            {
+                path: 'child',
+                outlet: 'child',
+
+                children: [
+                    {
+                        path: 'child-child',
+                        outlet: 'child-child',
+                        id: 'child-child'
+                    }
+                ],
+
+                defaultParams: {
+					hideMenu: 'true'
+				},
+
+                id: 'child'
+            },
+            {
+                path: 'child2',
+                outlet: 'child2',
+                id: 'child2'
+            }
+        ],
+
+        id: anIdentifier
     },
     {
         path: 'profile',
@@ -67,14 +113,41 @@ export default [
 export default [
     {
         path: 'home',
-        outlet: 'home',
+        outlet: a.nested.identifier,
         defaultRoute: true,
-        id: 'home'
+        id: a.nested.identifier
     },
     {
         path: 'about',
-        outlet: 'about',
-        id: 'about'
+        outlet: anIdentifier,
+
+        children: [
+            {
+                path: 'child',
+                outlet: 'child',
+
+                children: [
+                    {
+                        path: 'child-child',
+                        outlet: 'child-child',
+                        id: 'child-child'
+                    }
+                ],
+
+                defaultParams: {
+					hideMenu: 'true'
+				},
+
+                id: 'child'
+            },
+            {
+                path: 'child2',
+                outlet: 'child2',
+                id: 'child2'
+            }
+        ],
+
+        id: anIdentifier
     },
     {
         path: 'profile',

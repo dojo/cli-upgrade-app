@@ -17,25 +17,36 @@ export default function(file: any, api: any) {
 			.replaceWith((p: any) => {
 				if (p.node && p.node.properties) {
 					const outlet = p.node.properties.reduce(
-						(outlet: string | boolean, property: any) =>
-							outlet ? outlet : property.key.name === 'outlet' && property.value.value,
+						(outlet: string | boolean | any, property: any) =>
+							outlet
+								? outlet
+								: property.key.name === 'outlet' &&
+								  (property.value.type === 'StringLiteral' ? property.value.value : property.value),
 						false
 					);
 					if (outlet) {
 						if (!quote) {
 							quote = p.node.properties[0].value.extra.raw[0] === '"' ? 'double' : 'single';
 						}
+						let value: any;
+						if (typeof outlet === 'string') {
+							value = j.stringLiteral(outlet);
+						} else if (outlet.type === 'MemberExpression') {
+							value = j.memberExpression(outlet.object, outlet.property);
+						} else if (outlet.type === 'Identifier') {
+							value = j.identifier(outlet.name);
+						}
+
 						return {
 							...p.node,
-							properties: [
-								...p.node.properties,
-								j.objectProperty(j.identifier('id'), j.stringLiteral(outlet))
-							]
+							properties: value
+								? [...p.node.properties, j.objectProperty(j.identifier('id'), value)]
+								: [...p.node.properties]
 						};
 					}
 				}
 
-				return p;
+				return { ...p.node };
 			})
 			.toSource({ quote: quote || 'single', lineTerminator });
 	} else {
