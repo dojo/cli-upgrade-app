@@ -26,7 +26,7 @@ describe('new-test-harness', () => {
 			normalizeLineEndings(`
 import { tsx } from '@dojo/framework/core/vdom';
 import harness from '@dojo/framework/testing/harness/harness';
-import { createBreakpointMock } from '@dojo/framework/testing/harness/mocks/middleware/breakpoint';
+import { createBreakpointMock } from '@dojo/framework/testing/mocks/middleware/breakpoint';
 import assertionTemplate from '@dojo/framework/testing/harness/assertionTemplate';
 `)
 		);

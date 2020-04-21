@@ -14,7 +14,11 @@ export default function(file: any, api: any) {
 				quote = source.extra.raw.substr(0, 1) === '"' ? 'double' : 'single';
 			}
 
-			if (source.value && source.value.startsWith('@dojo/framework/testing/')) {
+			if (
+				source.value &&
+				source.value.startsWith('@dojo/framework/testing/') &&
+				!source.value.startsWith('@dojo/framework/testing/mocks')
+			) {
 				source.value = source.value.replace('@dojo/framework/testing/', '@dojo/framework/testing/harness/');
 			}
 
