@@ -14,6 +14,8 @@ const changeImport = {
 import { tsx, w } from '@dojo/framework/core/vdom';
 import { MiddlewareResult } from '@dojo/framework/core/interfaces';
 const Foo: MiddlewareResult<any, any, any> = {};
+const bar: void | MiddlewareResult<any, any, any> = {};
+const baz: { foo: string } & MiddlewareResult<any, any, any> = {};
 `)
 };
 
@@ -34,6 +36,8 @@ describe('middleware-result', () => {
 import { tsx, w } from '@dojo/framework/core/vdom';
 import { DefaultMiddlewareResult } from '@dojo/framework/core/interfaces';
 const Foo: DefaultMiddlewareResult = {};
+const bar: void | DefaultMiddlewareResult = {};
+const baz: { foo: string } & DefaultMiddlewareResult = {};
 `)
 		);
 	});

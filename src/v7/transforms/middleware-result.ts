@@ -30,21 +30,44 @@ export default function(file: any, api: any) {
 		return { ...path.node, source: { ...source }, specifiers: [...specifiers] };
 	});
 
-	debugger;
 	if (importName) {
+		function isMiddlewareResultType(typeAnnotation: any) {
+			return typeAnnotation && typeAnnotation.typeName && typeAnnotation.typeName.name === importName;
+		}
+
 		jFile.find(j.TSTypeAnnotation).replaceWith(function(path: any) {
 			const node = path.value;
-			if (
-				node.typeAnnotation &&
-				node.typeAnnotation.typeName &&
-				node.typeAnnotation.typeName.name === importName
-			) {
+			if (isMiddlewareResultType(node.typeAnnotation)) {
 				return {
 					...node,
 					typeAnnotation: {
 						...node.typeAnnotation,
 						typeName: j.identifier('DefaultMiddlewareResult'),
 						typeParameters: undefined
+					}
+				};
+			} else if (
+				node.typeAnnotation &&
+				(node.typeAnnotation.type === 'TSUnionType' || node.typeAnnotation.type === 'TSIntersectionType')
+			) {
+				debugger;
+				return {
+					...node,
+					typeAnnotation: {
+						...node.typeAnnotation,
+						types:
+							node.typeAnnotation.types &&
+							node.typeAnnotation.types.map((type: any) => {
+								if (isMiddlewareResultType(type)) {
+									return {
+										...type,
+										typeName: j.identifier('DefaultMiddlewareResult'),
+										typeParameters: undefined
+									};
+								}
+
+								return type;
+							})
 					}
 				};
 			}
