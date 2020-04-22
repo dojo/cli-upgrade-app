@@ -15,6 +15,10 @@ export const config: VersionConfig = {
 		{
 			name: 'Update Outlet dependencies to Route',
 			path: resolve(__dirname, 'transforms', 'outlet-to-route.js')
+		},
+		{
+			name: 'Convert MiddlewareResult type to DefaultMiddlewareResult',
+			path: resolve(__dirname, 'transforms', 'middleware-result.js')
 		}
 	],
 	dependencies: {
