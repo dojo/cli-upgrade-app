@@ -5,7 +5,7 @@ export default function(file: any, api: any) {
 	const j = api.jscodeshift;
 	const lineTerminator = getLineEndings(file.source);
 	let jFile = j(file.source);
-	let importName: string = '';
+	let importName = '';
 
 	jFile.find(j.ImportDeclaration).forEach((path: any) => {
 		const { source, specifiers } = path.node;
@@ -50,7 +50,6 @@ export default function(file: any, api: any) {
 				node.typeAnnotation &&
 				(node.typeAnnotation.type === 'TSUnionType' || node.typeAnnotation.type === 'TSIntersectionType')
 			) {
-				debugger;
 				return {
 					...node,
 					typeAnnotation: {
