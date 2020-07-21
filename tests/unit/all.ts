@@ -11,3 +11,4 @@ import './v7/transforms/new-test-harness';
 import './v7/transforms/route-ids';
 import './v7/transforms/outlet-to-route';
 import './v7/transforms/middleware-result';
+import './v7/transforms/outlet-context';

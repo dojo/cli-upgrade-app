@@ -19,6 +19,10 @@ export const config: VersionConfig = {
 		{
 			name: 'Convert MiddlewareResult type to DefaultMiddlewareResult',
 			path: resolve(__dirname, 'transforms', 'middleware-result.js')
+		},
+		{
+			name: 'Convert OutletContext type to RouteContext',
+			path: resolve(__dirname, 'transforms', 'outlet-context.js')
 		}
 	],
 	dependencies: {
